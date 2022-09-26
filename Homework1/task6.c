@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 int main()
 {
@@ -14,20 +15,20 @@ int main()
     int lengthS = strlen(s);
     int lengthS1 = strlen(s1);
     int counter = 0;
-    int check = 0;
+    bool check = false;
     
     for(int i = 0; i < lengthS; i++)
     {
-        check = 1;
+        check = true;
         for(int j = 0; j < lengthS1; j++)
         {
-            if(s[i+j]!=s1[j])
+            if(s[i+j] != s1[j])
             {
-                check = 0;
+                check = false;
                 break;
             }
         }
-        if(check == 1)
+        if(check)
         {
             counter++;
         }
