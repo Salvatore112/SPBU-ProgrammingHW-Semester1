@@ -5,8 +5,8 @@ int partialDevident(int devident, int deviser);
 
 int main()
 {
-    int devident;
-    int deviser;
+    int devident = 0;
+    int deviser = 0;
     
     printf("Please enter a devident: ");
     scanf("%d", &devident);
@@ -40,37 +40,47 @@ int partialDevident(int devident, int deviser)
 
     while(devident > deviser)
     {
-        devident-=deviser;
+        devident -= deviser;
     }
         
     quotient = devident; 
-    initialDevident-=quotient;
+    initialDevident -= quotient;
 
     while(initialDevident != 0)
     {
-        initialDevident-=deviser;
+        initialDevident -= deviser;
         count++;
     }
 
-    if(devidentIsNegative == false && deviserIsNegative == false)
-    {
-        return count;
-    }
+    bool answerNegative = true;
 
-    if(devidentIsNegative == false && deviserIsNegative == true)
+    if(!devidentIsNegative && !deviserIsNegative || devidentIsNegative && deviserIsNegative)
     {
-        return -count;
-    }
-
-    if(devidentIsNegative == true && deviserIsNegative == false)
-    {
-        return -count - 1;
-    }
-
-    if(devidentIsNegative == true && deviserIsNegative == true)
-    {
-        return count + 1;
+        answerNegative = false;
     }
     
+    if(answerNegative)
+    {
+       if(devidentIsNegative && !deviserIsNegative)
+       {
+            return -count - 1;
+       }
+       else
+       {
+            return -count;
+       }
+    } 
+
+    if(!answerNegative)
+    {
+       if(devidentIsNegative && deviserIsNegative)
+       {
+            return count + 1;
+       }
+       else
+       {
+            return count;
+       }
+    } 
+
 }
-    
