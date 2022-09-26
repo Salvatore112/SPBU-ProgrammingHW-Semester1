@@ -1,11 +1,28 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
-int isBalanced(char s[])
+#define SIZE 1000
+
+bool closedBracket(char stack[], int *stackPosition, char openBracket)
+{
+    if(stack[*stackPosition] == openBracket && *stackPosition >= 0)
+    {
+        stack[*stackPosition] = '\0';
+        *stackPosition -= 1;
+        return true;
+    }
+    else
+    {
+        return false;
+    } 
+}
+
+bool isBalanced(char s[])
 {
 
     int stackPosition = -1;
-    char stack[1000] = {'\0'};
+    char stack[SIZE] = {'\0'};
     
     for(int i = 0; i < strlen(s); i++)
     {
@@ -19,63 +36,31 @@ int isBalanced(char s[])
             stack[stackPosition] = s[i];
             break;
             case ')':
-                if(stack[stackPosition] == '(' && stackPosition >= 0)
-                {
-                    stack[stackPosition] = '\0';
-                    stackPosition--;
-                }
-                else
-                {
-                    return 0;
-                }
+                closedBracket(stack, &stackPosition, '(');
                 break;
             case ']':
-                if(stack[stackPosition] == '[' && stackPosition >= 0)
-                {
-                    stack[stackPosition] = '\0';
-                    stackPosition--;
-                }
-                else
-                {
-                    return 0;
-                }
+                closedBracket(stack, &stackPosition, '[');
                 break;
             case '}':
-                if(stack[stackPosition] == '{' && stackPosition >= 0)
-                {
-                    stack[stackPosition] = '\0';
-                    stackPosition--;
-                }
-                else
-                {
-                    return 0;
-                }
+                closedBracket(stack, &stackPosition, '{');
                 break;
             case '>':
-                if(stack[stackPosition] == '<' && stackPosition >= 0)
-                {
-                    stack[stackPosition] = '\0';
-                    stackPosition--;
-                }
-                else
-                {
-                    return 0;
-                }
+                closedBracket(stack, &stackPosition, '<');
                 break;
         }
     }
     if(stackPosition == -1)
     {
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 int main()
 {
 
-    char string[1000];
-    printf("Please enter a string: ");
+    char string[SIZE];
+    printf("Please enter a string(less or equal to 1000 characters): ");
     scanf("%s", string);
     if(isBalanced(string))
     {
