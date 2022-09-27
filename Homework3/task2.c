@@ -103,11 +103,6 @@ int binarySearch(int array[], int element, int left, int right)
     {
         return binarySearch(array, element, mid + 1, right);
     }
-
-    if(left > right)
-    {
-        return -1;
-    }
 }
 
 void swap(int *firstNumber, int *secondNumber)
