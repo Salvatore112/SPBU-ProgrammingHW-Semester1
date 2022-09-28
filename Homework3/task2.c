@@ -32,7 +32,18 @@ int main()
     } 
     
     int *array = malloc(length * sizeof(int));
+    if(array == NULL)
+    {
+        printf("Memory is not available!\n");
+        exit(1);
+    }
+
     int *numbers = malloc(amount * sizeof(int));
+    if(numbers == NULL)
+    {
+        printf("Memory is not available!\n");
+        exit(1);
+    }
     
     for(int i = 0; i < length; i++)
     {
@@ -72,7 +83,7 @@ int main()
 
     if(count == 0)
     {
-        printf("none of these numbers are in the array :(\n");
+        printf("none of these numbers are in the array \n");
     }
     
     free(numbers);
