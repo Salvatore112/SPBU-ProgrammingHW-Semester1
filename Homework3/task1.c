@@ -23,6 +23,12 @@ int main()
     
     int *array = malloc(size * sizeof(int));
 
+    if(array == NULL)
+    {
+        printf("Memory is not available\n");
+        exit(1);
+    }
+
     for(int i = 0; i < size; i++)
     {
         printf("Enter the element #%d: ", i);
@@ -37,6 +43,7 @@ int main()
     printf("\nThe array after the sort: ");
     display(array, size);
     
+    free(array);
     return 0;
 }
 
