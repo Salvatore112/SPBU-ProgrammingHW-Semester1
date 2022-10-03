@@ -1,50 +1,100 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#define length 10
 
 void display(int array[], int size);
 void insertionSort(int array[], int low, int high);
 void swap(int *firstVal, int *secondVal);
 int partition(int array[], int low, int high);
 int quickSort(int array[], int low, int high);
+bool tests();
+bool checkSorted();
 
 int main()
 {
-    int size;
+    if(tests()){
+        int size;
 
-    printf("Enter the size of the array: ");
-    scanf("%d", &size);
-
-    while(size <= 0)
-    {
-        printf("Invalid input! (size must be greater than 0)\n");
         printf("Enter the size of the array: ");
         scanf("%d", &size);
+
+        while(size <= 0)
+        {
+            printf("Invalid input! (size must be greater than 0)\n");
+            printf("Enter the size of the array: ");
+            scanf("%d", &size);
+        }
+        
+        int *array = malloc(size * sizeof(int));
+
+        for(int i = 0; i < size; i++)
+        {
+            printf("Enter the element #%d: ", i);
+            scanf("%d", &array[i]);
+        }
+
+        printf("\nThe array before the sort: ");
+        display(array, size);
+        
+        quickSort(array, 0, size - 1);
+
+        printf("\nThe array after the sort: ");
+        display(array, size);
+        
+        return 0;
+    }
+}
+
+bool tests()
+{
+    
+    int testArray2[length] = {1, 5, 8, 3, 7, 9, 2, 3, 4, 100};
+    quickSort(testArray2, 0, 9);
+    if(!checkSorted(testArray2, length))
+    {   
+        printf("Failed when the pivot is the biggest element");
+        return false;
+    }
+
+    int testArray3[length] = {122, 5, 8, 3, 7, 9, 2, 3, 4, 1};
+    quickSort(testArray3, 0, 9);
+    if(!checkSorted(testArray3, length))
+    {   
+        printf("Failed when the pivot is the smallest element");
+        return false;
     }
     
-    int *array = malloc(size * sizeof(int));
+    int testArray1[length] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    quickSort(testArray1, 0, 9);
+    if(!checkSorted(testArray1, length))
+    {   
+        printf("Failed when the elements are the same");
+        return false;
+    }
+    
+    int testArray[length] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    quickSort(testArray, 0, 9);
+    if(!checkSorted(testArray, length))
+    {   
+        printf("Failed when the array is sorted");
+        return false;
+    }
+    return true;
 
-    if(array == NULL)
+}
+
+bool checkSorted(int array[], int arrayLength)
+{   
+    for(int i = 0; i < arrayLength - 1; i++)
     {
-        printf("Memory is not available\n");
-        exit(1);
+        if(array[i] > array[i + 1])
+        {
+            return false;
+        }
     }
-
-    for(int i = 0; i < size; i++)
-    {
-        printf("Enter the element #%d: ", i);
-        scanf("%d", &array[i]);
-    }
-
-    printf("\nThe array before the sort: ");
-    display(array, size);
-    
-    quickSort(array, 0, size - 1);
-
-    printf("\nThe array after the sort: ");
-    display(array, size);
-    
-    free(array);
-    return 0;
+    return true;
 }
 
 void display(int array[], int size)
