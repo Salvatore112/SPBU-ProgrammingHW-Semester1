@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#define lengthT 10
 
 int binarySearch(int array[], int element, int left, int right);
 void swap(int *firstNumber, int *secondNumber);
 int partition(int array[], int low, int high);
 void quickSort(int array[], int low, int high);
+bool tests();
+bool checkSorted(int array[], int arrayLength);
 
 int main()
 {
@@ -149,4 +154,53 @@ void quickSort(int array[], int low, int high)
         quickSort(array, 0, pivotIndex - 1);
         quickSort(array, pivotIndex + 1, high);
     }
+}
+
+bool tests()
+{
+    
+    int testArray2[lengthT] = {1, 5, 8, 3, 7, 9, 2, 3, 4, 100};
+    quickSort(testArray2, 0, 9);
+    if(!checkSorted(testArray2, lengthT))
+    {   
+        printf("Failed when the pivot is the biggest element");
+        return false;
+    }
+
+    int testArray3[lengthT] = {122, 5, 8, 3, 7, 9, 2, 3, 4, 1};
+    quickSort(testArray3, 0, 9);
+    if(!checkSorted(testArray3, lengthT))
+    {   
+        printf("Failed when the pivot is the smallest element");
+        return false;
+    }
+    
+    int testArray1[lengthT] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    quickSort(testArray1, 0, 9);
+    if(!checkSorted(testArray1, lengthT))
+    {   
+        printf("Failed when the elements are the same");
+        return false;
+    }
+    
+    int testArray[lengthT] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    quickSort(testArray, 0, 9);
+    if(!checkSorted(testArray, lengthT))
+    {   
+        printf("Failed when the array is sorted");
+        return false;
+    }
+    return true;
+}
+
+bool checkSorted(int array[], int arrayLength)
+{   
+    for(int i = 0; i < arrayLength - 1; i++)
+    {
+        if(array[i] > array[i + 1])
+        {
+            return false;
+        }
+    }
+    return true;
 }
