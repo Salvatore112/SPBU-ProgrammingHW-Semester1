@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -9,14 +10,19 @@ int binarySearch(int array[], int element, int left, int right);
 void swap(int *firstNumber, int *secondNumber);
 int partition(int array[], int low, int high);
 void quickSort(int array[], int low, int high);
-bool tests();
+bool testsSorts();
+bool testsSearch();
 bool checkSorted(int array[], int arrayLength);
 
 int main()
 {
+    if(!testsSorts() || !testsSearch())
+    {
+        return 1;
+    }
     srand(time(0));
-    int length;
-    int amount;
+    int length = 0;
+    int amount = 0;
 
     printf("Enter the length of the array: ");
     scanf("%d", &length);
@@ -156,14 +162,13 @@ void quickSort(int array[], int low, int high)
     }
 }
 
-bool tests()
+bool testsSorts()
 {
-    
     int testArray2[lengthT] = {1, 5, 8, 3, 7, 9, 2, 3, 4, 100};
     quickSort(testArray2, 0, 9);
     if(!checkSorted(testArray2, lengthT))
     {   
-        printf("Failed when the pivot is the biggest element");
+        printf("Sort Failed when the pivot is the biggest element");
         return false;
     }
 
@@ -171,7 +176,7 @@ bool tests()
     quickSort(testArray3, 0, 9);
     if(!checkSorted(testArray3, lengthT))
     {   
-        printf("Failed when the pivot is the smallest element");
+        printf("Sort Failed when the pivot is the smallest element");
         return false;
     }
     
@@ -179,7 +184,7 @@ bool tests()
     quickSort(testArray1, 0, 9);
     if(!checkSorted(testArray1, lengthT))
     {   
-        printf("Failed when the elements are the same");
+        printf("Sort Failed when the elements are the same");
         return false;
     }
     
@@ -187,7 +192,32 @@ bool tests()
     quickSort(testArray, 0, 9);
     if(!checkSorted(testArray, lengthT))
     {   
-        printf("Failed when the array is sorted");
+        printf("Sort Failed when the array is sorted");
+        return false;
+    }
+    return true;
+}
+
+bool testsSearch()
+{
+    int testArray1[lengthT] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    if(binarySearch(testArray1, 1, 0, 9) != 0)
+    {
+        printf("Search Failed when the element in question is the first\n");
+        return false;
+    }
+
+    int testArray2[lengthT] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    if(binarySearch(testArray2, 10, 0, 9) != 9)
+    {
+        printf("Search Failed when the element in question is the last\n");
+        return false;
+    }
+
+    int testArray3[lengthT] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    if(binarySearch(testArray3, 111, 0, 9) != -1)
+    {
+        printf("Search Failed when the element in question is not in the array\n");
         return false;
     }
     return true;
