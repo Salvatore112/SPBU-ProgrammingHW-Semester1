@@ -1,15 +1,30 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 unsigned int fibonacci(int number);
 
+bool test();
+
 int main()
 {
-    int amount;
+    if(!test())
+    {
+        return 1;
+    }
     
-    printf("How many fibonacci collection do you want to see?: ");
-    scanf("%d", &amount);
+    int amount = 0;
+
+    printf("How many fibonacci cnumbers do you want to see?: ");
+    scanf("%u", &amount);
     
-    for(int i = 0; i < amount; i++)
+    while (amount <= 0)
+    {
+        printf("Enter a natural number!\n!");
+        printf("How many fibonacci cnumbers do you want to see?: ");
+        scanf("%u", &amount);
+    }
+    
+    for (int i = 0; i < amount; i++)
     {
         printf("%u, ", fibonacci(i));
     }
@@ -18,14 +33,29 @@ int main()
 
 unsigned int fibonacci(int number)
 {
-    if(number == 0)
+    if (number == 0)
     {
         return 0;
     }
-    if(number == 1)
+    if (number == 1)
     {
         return 1;
     }
     
     return fibonacci(number - 1) + fibonacci(number - 2);
+}
+
+bool test()
+{
+    int FirstElementsSum = 0;
+    int expectedSum = 1569;
+    for(int i = 0; i <= 15; i++)
+    {
+        FirstElementsSum += fibonacci(i);
+    }
+    if (expectedSum == FirstElementsSum)
+    {
+        return true;
+    }
+    return false;
 }
