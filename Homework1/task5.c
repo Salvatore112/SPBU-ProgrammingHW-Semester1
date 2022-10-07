@@ -6,16 +6,13 @@
 
 bool closedBracket(char stack[], int *stackPosition, char openBracket)
 {
-    if(stack[*stackPosition] == openBracket && *stackPosition >= 0)
+    if (stack[*stackPosition] == openBracket && *stackPosition >= 0)
     {
         stack[*stackPosition] = '\0';
         *stackPosition -= 1;
         return true;
     }
-    else
-    {
-        return false;
-    } 
+    return false;
 }
 
 bool isBalanced(char s[])
@@ -24,9 +21,9 @@ bool isBalanced(char s[])
     int stackPosition = -1;
     char stack[SIZE] = {'\0'};
     
-    for(int i = 0; i < strlen(s); i++)
+    for (int i = 0; i < strlen(s); i++)
     {
-        switch(s[i])
+        switch (s[i])
         {
             case '(':
             case '{':
@@ -36,20 +33,32 @@ bool isBalanced(char s[])
             stack[stackPosition] = s[i];
             break;
             case ')':
-                closedBracket(stack, &stackPosition, '(');
+                if (!closedBracket(stack, &stackPosition, '('))
+                {
+                    return false;
+                }
                 break;
             case ']':
-                closedBracket(stack, &stackPosition, '[');
+                if (!closedBracket(stack, &stackPosition, '['))
+                {
+                    return false;
+                }
                 break;
             case '}':
-                closedBracket(stack, &stackPosition, '{');
+                if (!closedBracket(stack, &stackPosition, '{'))
+                {
+                    return false;
+                }
                 break;
             case '>':
-                closedBracket(stack, &stackPosition, '<');
+                if (!closedBracket(stack, &stackPosition, '<'))
+                {
+                    return false;
+                }
                 break;
         }
     }
-    if(stackPosition == -1)
+    if (stackPosition == -1)
     {
         return true;
     }
@@ -58,11 +67,12 @@ bool isBalanced(char s[])
 
 int main()
 {
-
     char string[SIZE];
+    
     printf("Please enter a string(less or equal to 1000 characters): ");
     scanf("%s", string);
-    if(isBalanced(string))
+    
+    if (isBalanced(string))
     {
         printf("The sequence is balanced\n");
     }
@@ -72,3 +82,5 @@ int main()
     }
     return 0;
 }
+
+
