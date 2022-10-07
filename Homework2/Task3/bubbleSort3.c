@@ -15,12 +15,24 @@ int main()
         return 1;
     }
 
-    int length;
+    int length = 0; 
     
     printf ("Enter the length of the array: ");
     scanf ("%d", &length);
+    while (length <= 0)
+    {
+        printf("Enter a natural number!\n");
+        printf ("Enter the length of the array: ");
+        scanf ("%d", &length);
+    }
 
     int *array = malloc(length * sizeof (int));
+
+    if(array == NULL)
+    {
+        printf("Memory is not available!\n");
+        return 1;
+    }
 
     for (int i = 0; i < length; i++)
     {
@@ -36,6 +48,7 @@ int main()
         printf ("%d ", array[i]);
     }
 
+    free(array);
     return 0;
 }
 
@@ -82,7 +95,6 @@ bool testsSorts()
         printf ("Sort Failed when the array is sorted\n");
         return false;
     }
-    return true;
 
     int testArray3[lengthT] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     bubbleSort(testArray3, lengthT);
