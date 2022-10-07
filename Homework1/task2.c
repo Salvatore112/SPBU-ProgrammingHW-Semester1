@@ -14,8 +14,8 @@ int main()
     scanf("%d", &deviser);
     
     printf("Incomplete quotient = %d\n", partialDevident(devident, deviser));
-
 }
+
 int partialDevident(int devident, int deviser)
 {
     bool devidentIsNegative = false; 
