@@ -25,6 +25,7 @@ int push(Node **head, int element)
     temp->element = element;
     temp->previous = *head;
     *head = temp;
+    return (*head)->element;
 }
 
 int pop(Node **head, int *errorCode)
