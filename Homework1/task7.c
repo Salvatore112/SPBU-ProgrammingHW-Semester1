@@ -3,16 +3,16 @@
 
 int isPrime(int num)
 {
-    if(num == 1)
+    if (num == 1)
     {
         return 0;
     }
 
     int sqrtNum = sqrt(num);
     
-    for(int i = 2; i <= round(sqrtNum); i++)
+    for (int i = 2; i <= round(sqrtNum); i++)
     {
-        if(num % i == 0)
+        if (num % i == 0)
         {
             return 0;
         }
@@ -27,7 +27,7 @@ int main()
     printf("Enter a number: ");
     scanf("%d", &number);
 
-    if(number <= 1)
+    if (number <= 1)
     {
         printf("There are no prime numbers that are less or equal to %d\n", number);
         return 0;
@@ -35,9 +35,9 @@ int main()
 
     printf("Prime numbers that are less or equal to %d: \n", number);
     
-    for(int i = 1; i <= number; i++)
+    for (int i = 1; i <= number; i++)
     {
-        if(isPrime(i) == 1)
+        if (isPrime(i) == 1)
         {
             printf("%d\n", i);
         }
