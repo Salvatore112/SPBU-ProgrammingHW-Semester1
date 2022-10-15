@@ -52,6 +52,10 @@ bool isEmpty(Node *head)
 
 int peek(Node *head)
 {
+    if(isEmpty(head))
+    {
+        return 0;
+    }
     return head->element;
 }
 
