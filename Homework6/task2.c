@@ -10,7 +10,7 @@ bool tests();
 
 int main()
 {
-    if(!tests())
+    if(!(tests() && stackTests()))
     {
         return 1;
     }
