@@ -2,19 +2,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
-//testMerge
+
 typedef struct Node 
 {
-    int element;
+    char element;
     struct Node *previous;
 } Node;
 
-void test()
-{
-    printf("ww");
-}
-
-int push(Node **head, int element)
+char push(Node **head, char element)
 {
     Node *temp = malloc(sizeof(Node));
     if (temp == NULL)
@@ -28,7 +23,7 @@ int push(Node **head, int element)
     return (*head)->element;
 }
 
-int pop(Node **head, int *errorCode)
+char pop(Node **head, int *errorCode)
 {
     if (*head == NULL)
     {
@@ -50,11 +45,11 @@ bool isEmpty(Node *head)
     return head == NULL;
 } 
 
-int peek(Node *head)
+char peek(Node *head)
 {
-    if(isEmpty(head))
+    if (isEmpty(head))
     {
-        return 0;
+        return '0';
     }
     return head->element;
 }
