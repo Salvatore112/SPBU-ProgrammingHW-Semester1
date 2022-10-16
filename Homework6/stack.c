@@ -37,6 +37,7 @@ char pop(Node **head, int *errorCode)
     temp = (*head)->previous;
     free(*head);
     (*head) = temp;
+    
     return value;
 }
 
