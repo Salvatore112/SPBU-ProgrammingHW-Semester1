@@ -5,7 +5,7 @@
 
 typedef struct Node 
 {
-    int element;
+    char element;
     struct Node *previous;
 } Node;
 
@@ -38,7 +38,7 @@ bool popTests()
     Node *testStack1 = NULL;
     int errorCode1 = 0;
     pop(&testStack1, &errorCode1);
-    if(errorCode1 != -1)
+    if (errorCode1 != -1)
     {
         printf("Pop Failed when trying to pop an empty stack");
         return false;
@@ -47,7 +47,7 @@ bool popTests()
     Node *testStack2 = NULL;
     int errorCode2 = 0;
     push(&testStack2, 'h');
-    if(pop(&testStack2, &errorCode2) != 'h')
+    if (pop(&testStack2, &errorCode2) != 'h')
     {
         printf("Pop Failed when trying to pop the first element");
         return false;
@@ -59,7 +59,7 @@ bool popTests()
     push(&testStack2, 'e');
     push(&testStack2, 'r');
     push(&testStack2, 't');
-    if(pop(&testStack2, &errorCode3) != 't')
+    if (pop(&testStack2, &errorCode3) != 't')
     {
         printf("Pop Failed when trying to pop some element");
         return false;
@@ -88,7 +88,7 @@ bool isEmptyTests()
 bool peekTests()
 {
     Node *testStack1 = NULL;
-    if(peek(testStack1) != 0)
+    if (peek(testStack1) != '0')
     {
         printf("peek failed on trying to peek an empty stack");
         return false;
@@ -96,7 +96,7 @@ bool peekTests()
 
     Node *testStack2 = NULL;
     push(&testStack2, 'o');
-    if(peek(testStack2) != 'o')
+    if (peek(testStack2) != 'o')
     {
         printf("peek failed on trying to peek a stack of one element");
         return false;
@@ -106,7 +106,7 @@ bool peekTests()
     push(&testStack3, 'i');
     push(&testStack3, 'j');
     push(&testStack3, 'v');
-    if(peek(testStack3) != 'v')
+    if (peek(testStack3) != 'v')
     {
         printf("peek failed on trying to peek a stack of more than one element");
         return false;
@@ -118,7 +118,7 @@ bool clearTests()
 {
     Node *testStack1 = NULL;
     clear(&testStack1);
-    if(peek(testStack1) != 0)
+    if (peek(testStack1) != '0')
     {
         printf("Clear failed on an empty stack");
         return false;
@@ -129,9 +129,9 @@ bool clearTests()
     push(&testStack2, '2');
     push(&testStack2, '4');
     clear(&testStack2);
-    if(peek(testStack2) != 0)
+    if (peek(testStack2) != '0')
     {
-        printf("Clear failed on an empty stack");
+        printf("Clear failed");
         return false;
     }
     return true;
