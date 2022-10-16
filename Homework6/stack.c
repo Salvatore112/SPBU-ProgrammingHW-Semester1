@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
-
+//testMerge
 typedef struct Node 
 {
     int element;
