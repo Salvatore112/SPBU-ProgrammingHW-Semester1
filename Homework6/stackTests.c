@@ -3,12 +3,6 @@
 #include <stdbool.h>
 #include "stack.h"
 
-typedef struct Node 
-{
-    char element;
-    struct Node *previous;
-} Node;
-
 bool pushTests()
 {
     Node *testStack1 = NULL;

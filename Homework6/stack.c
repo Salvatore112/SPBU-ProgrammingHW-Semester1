@@ -3,12 +3,6 @@
 #include <stdbool.h>
 #include "stack.h"
 
-typedef struct Node 
-{
-    char element;
-    struct Node *previous;
-} Node;
-
 char push(Node **head, char element)
 {
     Node *temp = malloc(sizeof(Node));

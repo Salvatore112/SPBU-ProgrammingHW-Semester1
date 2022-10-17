@@ -3,7 +3,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct Node Node; // struct that holds the element at the top and the pointer to the element under it
+typedef struct Node 
+{
+    char element;
+    struct Node *previous;
+} Node; // struct that holds the element at the top and the pointer to the element under it
 
 char push(Node **head, char element); // Function that adds a new element at the top of the stack
 
