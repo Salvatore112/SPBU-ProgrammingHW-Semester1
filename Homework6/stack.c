@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include "stack.h"
 
-char push(Node **head, char element)
+char* push(Node **head, char *element)
 {
     Node *temp = malloc(sizeof(Node));
     if (temp == NULL)
     {
         printf("Out of memory");
-        return -1;
+        return "-1";
     }
     temp->element = element;
     temp->previous = *head;
@@ -17,15 +17,15 @@ char push(Node **head, char element)
     return (*head)->element;
 }
 
-char pop(Node **head, int *errorCode)
+char* pop(Node **head, int *errorCode)
 {
     if (*head == NULL)
     {
         *errorCode = -1;
-        return 0;
+        return "0";
     }
     *errorCode = 0;
-    int value = (*head)->element;
+    char *value = (*head)->element;
 
     Node *temp;
     temp = (*head)->previous;
@@ -39,11 +39,11 @@ bool isEmpty(Node *head)
     return head == NULL;
 } 
 
-char peek(Node *head)
+char* peek(Node *head)
 {
     if (isEmpty(head))
     {
-        return '0';
+        return "Empty";
     }
     return head->element;
 }
@@ -58,5 +58,14 @@ void clear(Node **head)
         {
             break;
         }
+    }
+}
+
+void displayStack(Node *stack)
+{   
+    while (stack != NULL)
+    {
+        printf("%s", stack->element);
+        stack = stack->previous;
     }
 }
