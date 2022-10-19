@@ -17,19 +17,15 @@ int main()
     int counter = 0;
     bool check = false;
     
-    for (int i = 0; i < lengthS; i++)
-    {
+    for (int i = 0; i < lengthS; i++) {
         check = true;
-        for (int j = 0; j < lengthS1; j++)
-        {
-            if (s[i + j] != s1[j])
-            {
+        for (int j = 0; j < lengthS1; j++) {
+            if (s[i + j] != s1[j]) {
                 check = false;
                 break;
             }
         }
-        if (check)
-        {
+        if (check) {
             counter++;
         }
     }
