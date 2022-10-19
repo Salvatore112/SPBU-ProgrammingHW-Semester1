@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
-
+//
 char* push(Node **head, char *element)
 {
     Node *temp = malloc(sizeof(Node));
