@@ -4,8 +4,7 @@
 void display(int ar[], int size);
 void reverse(int array[], int begining, int end);
 
-int main()
-{
+int main() {
     int m = 0;
     int n = 0;
 
@@ -16,8 +15,7 @@ int main()
 
     int *array = malloc( (m + n) * sizeof(int));
 
-    for (int i = 0; i < m + n; i++)
-    {
+    for (int i = 0; i < m + n; i++) {
         printf("Enter the element #%d: ", i);
         scanf("%d", &array[i]);
     }
@@ -31,22 +29,18 @@ int main()
     display(array, m + n);
 }
 
-void reverse(int array[], int begining, int end)
-{
+void reverse(int array[], int begining, int end) {
     int tempVal;
     
-    for (int i = begining; i < (end + begining) / 2; i++)
-    {
+    for (int i = begining; i < (end + begining) / 2; i++) {
         tempVal = array[i];
         array[i] = array[(end + begining) - i - 1];
         array[(end + begining) - i - 1] = tempVal;
     }
 }
 
-void display(int array[], int size)
-{
-    for (int j = 0; j < size; j++)
-    {
+void display(int array[], int size) {
+    for (int j = 0; j < size; j++) {
         printf("%d\n", array[j]);
     }
 }
