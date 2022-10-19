@@ -1,8 +1,7 @@
 //x^4 + x^3 + x^2 + x + 1
 #include<stdio.h>
 
-int main()
-{
+int main() {
     double x;
     printf("Please, enter the x: ");
     scanf("%lf", &x);
