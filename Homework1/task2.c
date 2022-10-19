@@ -3,8 +3,7 @@
 
 int partialDevident(int devident, int deviser);
 
-int main()
-{
+int main() {
     int devident = 0;
     int deviser = 0;
     
@@ -16,18 +15,15 @@ int main()
     printf("Incomplete quotient = %d\n", partialDevident(devident, deviser));
 }
 
-int partialDevident(int devident, int deviser)
-{
+int partialDevident(int devident, int deviser) {
     bool devidentIsNegative = false; 
     bool deviserIsNegative = false; 
     
-    if (devident < 0)
-    {
+    if (devident < 0) {
         devident = -devident;
         devidentIsNegative = true;
     }
-    if (deviser < 0)
-    {
+    if (deviser < 0) {
         deviser = -deviser; 
         deviserIsNegative = true;
     }
@@ -37,47 +33,38 @@ int partialDevident(int devident, int deviser)
     int quotient = 0;
     int count = 0;
 
-    while (devident > deviser)
-    {
+    while (devident > deviser) {
         devident -= deviser;
     }
         
     quotient = devident; 
     initialDevident -= quotient;
 
-    while (initialDevident != 0)
-    {
+    while (initialDevident != 0) {
         initialDevident -= deviser;
         count++;
     }
 
     bool answerNegative = true;
 
-    if (!devidentIsNegative && !deviserIsNegative || devidentIsNegative && deviserIsNegative)
-    {
+    if (!devidentIsNegative && !deviserIsNegative || devidentIsNegative && deviserIsNegative) {
         answerNegative = false;
     }
     
-    if (answerNegative)
-    {
-       if (devidentIsNegative && !deviserIsNegative)
-       {
+    if (answerNegative) {
+       if (devidentIsNegative && !deviserIsNegative) {
             return -count - 1;
        }
-       else
-       {
+       else {
             return -count;
        }
     } 
     
-    if (!answerNegative)
-    {
-       if (devidentIsNegative && deviserIsNegative)
-       {
+    if (!answerNegative) {
+       if (devidentIsNegative && deviserIsNegative) {
             return count + 1;
        }
-       else
-       {
+       else {
             return count;
        }
     } 
