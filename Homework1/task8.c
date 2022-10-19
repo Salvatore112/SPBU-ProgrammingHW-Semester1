@@ -3,8 +3,7 @@
 #include <stdlib.h>
 
 
-int main()
-{
+int main() {
     int size = 0;
     
     printf("Enter the size of the array: ");
@@ -13,12 +12,10 @@ int main()
     int temp = 0;
     int count = 0;
     
-    for(int i = 0; i < size; i++)
-    {
+    for(int i = 0; i < size; i++) {
         printf("Enter the element #%d: ", i);
         scanf("%d", &temp);
-        if(temp == 0)
-        {
+        if(temp == 0) {
             count++;
         }
     }
