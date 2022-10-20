@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 //Test that tests clear function
-bool clearTests();
+bool clearTests(); 
 
 //Test that tests push function
 bool pushTests(); 
