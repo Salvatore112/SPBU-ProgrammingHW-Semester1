@@ -10,10 +10,8 @@ void swap(int *firstValue,int *secondValue);
 void partition(int array[], int high, int low);
 bool partitionTests();
 
-int main()
-{
-    if(!partitionTests())
-    {
+int main() {
+    if (!partitionTests()) {
         return 1;
     }
     
@@ -24,22 +22,19 @@ int main()
     printf("Enter the size of the array: ");
     scanf("%d", &size);
     
-    while (size <= 0)
-    {
+    while (size <= 0) {
         printf("Invalid input, try again");
         printf("Enter the size of the array: ");
         scanf("%d", &size);
     }
 
     int *array = malloc(size * sizeof(int));
-    if(malloc == NULL)
-    {
+    if (malloc == NULL) {
         printf("Memory is not available!\n");
         return 1;
     }
     
-    for (int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
         array[i] = rand()%100;
     }
     
@@ -54,30 +49,24 @@ int main()
     free(array);
 }
 
-void displayArray(int array[],int size)
-{
-    for (int i = 0; i < size; i++)
-    {
+void displayArray(int array[],int size) {
+    for (int i = 0; i < size; i++) {
         printf("%d ", array[i]);
     }
 }
 
-void swap(int *firstValue,int *secondValue)
-{
+void swap(int *firstValue,int *secondValue) {
     int temp = *firstValue;
     *firstValue = *secondValue;
     *secondValue = temp;
 }
 
-void partition(int array[], int high, int low)
-{
+void partition(int array[], int high, int low) {
     int pivotVal = array[low];
     int i = high;
     
-    for (int j = high; j > low; j--)
-    {
-        if (array[j] >= pivotVal)
-        {
+    for (int j = high; j > low; j--) {
+        if (array[j] >= pivotVal) {
             swap(&array[i], &array[j]);
             i--;
         }
@@ -85,13 +74,10 @@ void partition(int array[], int high, int low)
     swap(&array[i], &array[low]);
 }
 
-bool partitionTests()
-{
-    for(int i = 0; i <= 10; i++)
-    {
+bool partitionTests() {
+    for (int i = 0; i <= 10; i++) {
         int testArray[lengthT];
-        for (int i = 0; i < lengthT; i++)
-        {
+        for (int i = 0; i < lengthT; i++) {
             testArray[i] = rand()%100;
         
         }
@@ -102,10 +88,8 @@ bool partitionTests()
 
         int j = 0;
 
-        while(testArray[j] != key)
-        {
-            if(testArray[j] >= key)
-            {
+        while (testArray[j] != key) {
+            if (testArray[j] >= key) {
                 printf("Test failed on the array");
                 displayArray(testArray, lengthT);
                 return false;
