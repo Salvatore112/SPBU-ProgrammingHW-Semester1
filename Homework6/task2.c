@@ -1,131 +1,122 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
 #include "stack.h"
 #include "stackTests.h"
 
-void operation(char operand, Node **PostFix, Node **PostFixMachine);
-char* calculator(char expression[], int expLength); 
+bool isBalanced(char string[], int length);
+bool closedBracket(Node **stack, char openBracket);
 bool tests();
 
 int main() {
-    if (!(stackTests() && tests())) {
+    if(!(tests() && stackTests())) {
         return 1;
     }
-
-    char expression[] = "9 6 - 1 2 + *";
     
-    int length = strlen(expression);
+    int size = 0;
     
-    printf("the answer is %s", calculator(expression, length));
-}
-
-void operation(char operand, Node **PostFix, Node **PostFixMachine) {
-   int topElement = 0;
-   int deeperElement = 0;
-   
-   char *tempResult = malloc(sizeof(char) * 10);
-   if (tempResult == NULL) {
-        printf("Out of memory!\n");
-        exit(1);
-   }
-   
-   if ((*PostFixMachine)->previous != NULL) {
-        int errorCode = 0;
-        pop(&(*PostFix), &errorCode);
-        topElement = atoi(pop(&(*PostFixMachine), &errorCode));
-        deeperElement = atoi(pop(&(*PostFixMachine), &errorCode));
-   }
-   switch (operand) {
-        case '-':         
-            itoa(deeperElement - topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
-            break;
-        case '+':       
-            itoa(deeperElement + topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
-            break;
-        case '*':        
-            itoa(deeperElement * topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
-            break;
-        case '/':       
-            itoa(deeperElement / topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
-            break;
-   }
-}
-
-char* calculator(char expression[], int expLength) {
-    Node *postFix = NULL; 
-    for (int i = expLength; i >= 0; i--) {
-        if (expression[i] != ' ' && expression[i] != '\0') {
-            char *string = malloc(sizeof(char) * 2);
-            string[1] = '\0';
-            string[0] = expression[i];
-            push(&postFix, string);
-        }
+    printf("Enter the size of the string:");
+    scanf("%d", &size);
+    while (size <= 0) {
+        printf("Invalid input, enter a natural number!\n");
+        printf("Enter the size of the string:");
+        scanf("%d", &size);
+    }
+    
+    char *string = malloc(size * sizeof(char));
+    if (string == NULL) {
+        printf("Out of memory\n");
+        return 1;
+    }
+    for (int i = 0; i < size; i++) {
+        printf("Enter the element #%d (one of the following brackets '({[]})': ", i);
+        scanf("%c", &string[i]);
+        scanf("%c");
     }
 
-    Node *postFixMachine = NULL;
-    while (!isEmpty(postFix)) {
-        switch (*(peek(postFix))) {
-            case '/':
-            case '*':
-            case '+':
-            case '-':
-                operation(*(peek(postFix)), &postFix, &postFixMachine);
+    if (isBalanced(string, size)) {
+        printf("The string is balanced\n");
+    }
+    else {
+        printf("The string is not balanced\n");
+    }
+    free(string);
+}
+
+bool isBalanced(char string[], int length) {
+    Node *stack = NULL;
+    for (int i = 0; i < length; i++) {
+        switch (string[i]) {
+            case '(':
+            case '[':
+            case '{':
+                push(&stack, string[i]);
                 break;
-            default:
-                int errorCode = 0;
-                push(&postFixMachine, pop(&postFix, &errorCode));
+            case ')':
+                if(!(closedBracket(&stack, '(')))
+                {
+                    return false;
+                }
+                break;
+            case ']':
+                if(!(closedBracket(&stack, '[')))
+                {
+                    return false;
+                }
+                break;
+            case '}':
+                if(!(closedBracket(&stack, '{')))
+                {
+                    return false;
+                }
                 break;
         }
-    } 
-    return peek(postFixMachine);
-}  
+    }
+    
+    if (peek(stack) == '0') {
+        return true;
+    }
+    return false;
+}
+
+bool closedBracket(Node **stack, char openBracket) {
+    if (peek(*stack) == openBracket) {
+        int errorCode = 0;
+        pop(&(*stack), &errorCode);
+        return true;
+    }
+    return false;
+}
 
 bool tests() {
-    char testExpression1[] = "9 6 - 1 2 + *";
-    int testLength1 = strlen(testExpression1);
-    if (strcmp(calculator(testExpression1, testLength1), "9") != 0) {
-        printf("Failed on the example exrepssion\n");
+    char testString1[] = "({)}";
+    if (isBalanced(testString1, 4)) {
+        printf("Failed on the example string\n");
         return false;
     }
-
-    char testExpression2[] = "9 9 +";
-    int testLength2 = strlen(testExpression2);
-    if (strcmp(calculator(testExpression2, testLength2), "18") != 0) {
-        printf("Addition fail\n");
+    char testString2[] = "({})";
+    if (!isBalanced(testString2, 4)) {
+        printf("Failed on the example string\n");
         return false;
     }
-
-    char testExpression3[] = "5 9 -";
-    int testLength3 = strlen(testExpression3);
-    if (strcmp(calculator(testExpression3, testLength3), "-4") != 0) {
-        printf("Subtraction fail\n");
+    char testString3[] = "(((())";
+    if (isBalanced(testString3, 6)) {
+        printf("Failed when there are remaining brackets on the stack\n");
         return false;
     }
-
-    char testExpression4[] = "7 9 *";
-    int testLength4 = strlen(testExpression4);
-    if (strcmp(calculator(testExpression4, testLength3), "63") != 0) {
-        printf("Multiplication fail\n");
+    char testString4[] = "(())))";
+    if (isBalanced(testString4, 6)) {
+        printf("Failed when there are too many brackets to be removed from the stack\n");
         return false;
     }
-
-    char testExpression5[] = "9 3 /";
-    int testLength5 = strlen(testExpression5);
-    if (strcmp(calculator(testExpression5, testLength5), "3") != 0) {
-        printf("Devision fail\n");
+    char testString5[] = "[({[()]})]";
+    if (!isBalanced(testString5, 10)) {
+        printf("Failed when there are all kinds of brackets\n");
         return false;
     }
-
-    char testExpression6[] = "9 3 /";
-    int testLength6 = strlen(testExpression6);
-    if (strcmp(calculator(testExpression6, testLength6), "3") != 0) {
-        printf("Devision fail\n");
+    char testString6[] = "[({[{()]})]";
+    if (isBalanced(testString6, 11)) {
+        printf("Failed when there are all kinds of brackets\n");
         return false;
     }
     return true;
