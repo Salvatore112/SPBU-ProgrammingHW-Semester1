@@ -3,14 +3,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-bool clearTests(); // Test that tests clear function
+//Test that tests clear function
+bool clearTests(); 
 
-bool pushTests(); // Test that tests push function
+//Test that tests push function
+bool pushTests(); 
 
-bool popTests(); // Test that tests pop function
+//Test that tests pop function
+bool popTests(); 
 
-bool isEmptyTests(); //Test that tests isEmpty function
+//Test that tests isEmpty function
+bool isEmptyTests(); 
 
-bool peekTests(); // Test that tests peek function
+//Test that tests peek function
+bool peekTests(); 
 
-bool stackTests(); // function that runs all the tests for a stack
+//function that runs all the tests for a stack
+bool stackTests(); 

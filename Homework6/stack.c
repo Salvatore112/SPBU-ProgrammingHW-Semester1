@@ -3,13 +3,11 @@
 #include <stdbool.h>
 #include "stack.h"
 
-char* push(Node **head, char *element)
-{
+char push(Node **head, char element) {
     Node *temp = malloc(sizeof(Node));
-    if (temp == NULL)
-    {
+    if (temp == NULL) {
         printf("Out of memory");
-        return "-1";
+        return -1;
     }
     temp->element = element;
     temp->previous = *head;
@@ -17,15 +15,13 @@ char* push(Node **head, char *element)
     return (*head)->element;
 }
 
-char* pop(Node **head, int *errorCode)
-{
-    if (*head == NULL)
-    {
+char pop(Node **head, int *errorCode) {
+    if (*head == NULL) {
         *errorCode = -1;
-        return "0";
+        return 0;
     }
     *errorCode = 0;
-    char *value = (*head)->element;
+    int value = (*head)->element;
 
     Node *temp;
     temp = (*head)->previous;
@@ -34,38 +30,23 @@ char* pop(Node **head, int *errorCode)
     return value;
 }
 
-bool isEmpty(Node *head)
-{
+bool isEmpty(Node *head) {
     return head == NULL;
 } 
 
-char* peek(Node *head)
-{
-    if (isEmpty(head))
-    {
-        return "Empty";
+char peek(Node *head) {
+    if (isEmpty(head)) {
+        return '0';
     }
     return head->element;
 }
 
-void clear(Node **head)
-{
-    while (!isEmpty(*head))
-    {
+void clear(Node **head) {
+    while (!isEmpty(*head)) {
         int errorCode = 0;
         pop(head, &errorCode);
-        if (errorCode < 0)
-        {
+        if (errorCode < 0) {
             break;
         }
-    }
-}
-
-void displayStack(Node *stack)
-{   
-    while (stack != NULL)
-    {
-        printf("%s", stack->element);
-        stack = stack->previous;
     }
 }
