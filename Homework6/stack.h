@@ -25,6 +25,9 @@ char peek(Node *head);
 //Function that removes all the elements from the stack
 void clear(Node **head); 
 
+//displays stack
+void displayStack(Node *stack);
+
 
 
 
