@@ -36,7 +36,7 @@ bool isEmpty(Node *head) {
 
 char peek(Node *head) {
     if (isEmpty(head)) {
-        return '0';
+        return 'n';
     }
     return head->element;
 }
@@ -48,5 +48,13 @@ void clear(Node **head) {
         if (errorCode < 0) {
             break;
         }
+    }
+}
+
+void displayStack(Node *stack) {
+    Node *temp = stack;
+    while (!isEmpty(temp)) {
+        int errorCode = 0;
+        printf("%c ", pop(&temp, &errorCode));
     }
 }
