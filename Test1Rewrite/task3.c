@@ -43,7 +43,7 @@ bool test() {
         amount[(int)character]++;
     } 
 
-    if (amount['b'] != 4 && amount['c'] != 4 && amount['e'] != 6 && amount['f'] != 4 && amount['l'] != 3 && amount['w'] != 3 && amount['z'] != 7){
+    if (amount['b'] != 4 && amount['c'] != 4 && amount['e'] != 6 && amount['f'] != 4 && amount['l'] != 3 && amount['w'] != 3 && amount['z'] != 7) {
         printf("Test failed");
         return false;
     } 
