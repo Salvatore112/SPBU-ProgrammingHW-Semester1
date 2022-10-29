@@ -82,6 +82,24 @@ bool tests() {
         return false;
     }
 
+    LinkedList *testList2 = createList();
+    
+    insert(555, "Tom", 0, testList2);
+    insert(555, "Tom", 1, testList2);
+    insert(555, "Tom", 2, testList2);
+    insert(555, "Tom", 3, testList2);
+    insert(555, "Tom", 4, testList2);
+    mergeSort(testList2, false);
+    if (!isSorted(testList2, false)) {
+        printf("Failed on sorting by a number (all elements are the same)\n");
+        return false;
+    }
+    mergeSort(testList2, true);
+    if (!isSorted(testList2, true)) {
+        printf("Failed on sorting by a name (all elements are the same)\n");
+        return false;
+    }
+    
     LinkedList *testList3 = createList();
 
     insert(22222, "Zack", 0, testList3);
