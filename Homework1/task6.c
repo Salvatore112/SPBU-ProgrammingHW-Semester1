@@ -15,17 +15,17 @@ int main()
     int lengthS = strlen(s);
     int lengthS1 = strlen(s1);
     int counter = 0;
-    bool check = false;
+    bool substringFound = false;
     
     for (int i = 0; i < lengthS; i++) {
-        check = true;
-        for (int j = 0; j < lengthS1; j++) {
+        substringFound = true;
+        for (int j = 0; j < lengthS1 - 1; j++) {
             if (s[i + j] != s1[j]) {
-                check = false;
+                substringFound = false;
                 break;
             }
         }
-        if (check) {
+        if (substringFound) {
             counter++;
         }
     }
