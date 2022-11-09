@@ -5,7 +5,7 @@
 #define SIZE 1000
 
 bool closedBracket(char stack[], int *stackPosition, char openBracket) {
-    if (stack[*stackPosition] == openBracket && *stackPosition >= 0) {
+    if (*stackPosition >= 0 && stack[*stackPosition] == openBracket) {
         stack[*stackPosition] = '\0';
         *stackPosition -= 1;
         return true;
@@ -13,20 +13,21 @@ bool closedBracket(char stack[], int *stackPosition, char openBracket) {
     return false;
 }
 
-bool isBalanced(char s[]) {
+bool isBalanced(char string[]) {
 
     int stackPosition = -1;
     char stack[SIZE] = {'\0'};
     
-    for (int i = 0; i < strlen(s); i++) {
-        switch (s[i]) {
+    int length = strlen(string);
+    for (int i = 0; i < length; i++) {
+        switch (string[i]) {
             case '(':
             case '{':
             case '[':
             case '<':
-            stackPosition++;
-            stack[stackPosition] = s[i];
-            break;
+                stackPosition++;
+                stack[stackPosition] = string[i];
+                break;
             case ')':
                 if (!closedBracket(stack, &stackPosition, '(')) {
                     return false;
@@ -49,16 +50,13 @@ bool isBalanced(char s[]) {
                 break;
         }
     }
-    if (stackPosition == -1) {
-        return true;
-    }
-    return false;
+    return stackPosition == -1;
 }
 
 int main() {
     char string[SIZE];
     
-    printf("Please enter a string(less or equal to 1000 characters): ");
+    printf("Please enter a string (less or equal to 1000 characters): ");
     scanf("%s", string);
     
     if (isBalanced(string)) {
