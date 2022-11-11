@@ -1,39 +1,32 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
+int main()
+{
+    char s[1000];
+    char s1[1000];
 
-bool isPrime(int num) {
-    if (num == 1) {
-        return false;
-    }
+    printf("Enter a string (No longer than 1000 characters): ");
+    scanf("%s", s);
+    printf("\nEnter a substring (No longer than 1000 characters): ");
+    scanf("%s", s1);
 
-    int sqrtNum = sqrt(num);
-    
-    for (int i = 2; i <= sqrtNum; i++) {
-        if (num % i == 0) {
-            return false;
+    int lengthS = strlen(s);
+    int lengthS1 = strlen(s1);
+    int counter = 0;
+    bool substringFound = false;
+
+    for (int i = 0; i < lengthS - lengthS1 + 1; i++) {
+        substringFound = true;
+        for (int j = 0; j < lengthS1; j++) {
+            if (s[i + j] != s1[j]) {
+                substringFound = false;
+                break;
+            }
+        }
+        if (substringFound) {
+            counter++;
         }
     }
-    
-    return true;
-}
 
-int main() {
-    int number;
-    printf("Enter a number: ");
-    scanf("%d", &number);
+    printf("\nS includes S1 %d times!\n", counter);
 
-    if (number <= 1) {
-        printf("There are no prime numbers that are less or equal to %d\n", number);
-        return 0;
-    }
-
-    printf("Prime numbers that are less or equal to %d: \n", number);
-    
-    for(int i = 1; i <= number; i++) {
-        if (isPrime(i) == 1) {
-            printf("%d\n", i);
-        }
-    }
     return 0;
 }
