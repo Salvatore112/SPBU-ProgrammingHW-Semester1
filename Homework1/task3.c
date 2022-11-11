@@ -14,6 +14,10 @@ int main() {
     scanf("%d", &n);
 
     int *array = malloc((m + n) * sizeof(int));
+    if (array == NULL) {
+        printf("Out of memory\n");
+        return 1;
+    }
 
     for (int i = 0; i < m + n; i++) {
         printf("Enter the element #%d: ", i);
@@ -21,18 +25,18 @@ int main() {
     }
 
     reverse(array, 0, m + n);
-    
+
     reverse(array, 0, n);
 
     reverse(array, n, n + m);
-    
+
     display(array, m + n);
+    free(array);
 }
 
 void reverse(int array[], int beginning, int end) {
-    int tempVal = 0;
     for (int i = beginning; i < (end + beginning) / 2; i++) {
-        tempVal = array[i];
+        int tempVal = array[i];
         array[i] = array[(end + beginning) - i - 1];
         array[(end + beginning) - i - 1] = tempVal;
     }
