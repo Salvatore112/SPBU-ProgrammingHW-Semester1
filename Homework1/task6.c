@@ -16,10 +16,10 @@ int main()
     int lengthS1 = strlen(s1);
     int counter = 0;
     bool substringFound = false;
-    
-    for (int i = 0; i < lengthS; i++) {
+
+    for (int i = 0; i < lengthS - lengthS1 + 1; i++) {
         substringFound = true;
-        for (int j = 0; j < lengthS1 - 1; j++) {
+        for (int j = 0; j < lengthS1; j++) {
             if (s[i + j] != s1[j]) {
                 substringFound = false;
                 break;
@@ -29,7 +29,7 @@ int main()
             counter++;
         }
     }
-    
+
     printf("\nS includes S1 %d times!\n", counter);
 
     return 0;
