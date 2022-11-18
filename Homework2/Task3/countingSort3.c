@@ -14,7 +14,7 @@ int main() {
         return 1;
     }
     
-    int length;
+    int length = 0;
     printf("Enter the length of the array: ");
     scanf("%d", &length);
     
