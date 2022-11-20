@@ -56,9 +56,9 @@ int hashLook(LinkedList* words[], char* word, int module) {
 
 HashTable* createHashTable(int size) {
     HashTable* newTable = calloc(1, sizeof(HashTable));
-    LinkedList** wordss = malloc(sizeof(LinkedList*) * 20);
-    for (int i = 0; i < 20; i++) {
-        wordss[i] = createList();
+    LinkedList** wordss = malloc(sizeof(LinkedList*) * size);
+    for (int i = 0; i < size; i++) {
+        wordss[i] = NULL;
     }
     newTable->buckets = wordss;
     newTable->size = size;
@@ -68,7 +68,7 @@ HashTable* createHashTable(int size) {
 float updateLoadFactor(HashTable* hashTable) {
     int occupied = 0;
     for (int i = 0; i < hashTable->size; i ++) {
-            occupied += listLength(hashTable->buckets[i]);
+        occupied += listLength(hashTable->buckets[i]);
     }
     hashTable->loadFactor = (float )occupied/(float )hashTable->size;
     return (float )occupied/(float )hashTable->size;
@@ -79,7 +79,6 @@ float getLoadFactor(HashTable* hashTable) {
 }
 
 void hashResize(HashTable** oldTable, int *module) {
-
     int newModule = (*oldTable)->size * 2;
     int oldModule = (*oldTable)->size;
     HashTable* newTable = createHashTable(newModule);
