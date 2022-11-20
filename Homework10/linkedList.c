@@ -54,7 +54,7 @@ int getFrequency(LinkedList* linkedList) {
 }
 
 bool isEmpty(LinkedList* linkedList) {
-    return linkedList->head == NULL;
+    return linkedList == NULL;
 }
 
 const char* getWord(LinkedList* linkedList) {
@@ -101,10 +101,10 @@ void conveyFrequency(LinkedList* linkedList, char* word, int newFrequency) {
 }
 
 int listLength(LinkedList* linkedList) {
-    Node* temp = linkedList->head;
-    if (temp == NULL) {
+    if (linkedList == NULL) {
         return 0;
     }
+    Node* temp = linkedList->head;
     int length = 1;
     while(temp->next != NULL) {
         temp = temp->next;
