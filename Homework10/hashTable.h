@@ -2,36 +2,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "linkedList.h"
 
-//A struct that contains buckets, load factor and the size (amount of buckets)
-typedef struct HashTable HashTable;
+//a wrapper for Node
+typedef struct LinkedList LinkedList;
 
-//hash function that takes a word, module and returns hash devided by that module
-int hash(char* word, int module);
+//function that creates a linked list
+LinkedList* createList();
 
-//inserts a word into a hash table or update the word's frequency if the word is already there
-void hashInsert(HashTable* hashTable, char* word, int module);
+//inserts a new element to the beginning of the list
+void listInsertBeginning(char* word, LinkedList *linkedList);
 
-//creates and returns a hashTable struct
-HashTable* createHashTable(int size);
+//returns the value of the frequency field
+int getFrequency(LinkedList* linkedList);
 
-//function that recounts the load factor of the hash table
-float updateLoadFactor(HashTable* hashTable);
+//returns the value of the word field
+const char* getWord(LinkedList* linkedList);
 
-//return the load factor of the hash table
-float getLoadFactor(HashTable* hashTable);
+//moves head forward by one element
+bool listTraverse(LinkedList* linkedList);
 
-//creates a brand-new hash table double the size of the previous and returns it
-void hashResize(HashTable** oldTable,int *module);
+//cheeks to see if the word is in the list
+bool isInTheList(LinkedList* linkedList, char* word);
 
-//prints the words along with their frequencies
-void printWords(HashTable* hashTable);
+//increments a frequency by 1
+void incrementFrequency(LinkedList* linkedList, char* word);
 
-//looks for the longest list of the table and returns it
-int findMaxList(HashTable* hashTable);
+//returns the length of the list
+int listLength(LinkedList* linkedList);
 
-//looks for the average list of the table and returns it
-float findAverageList(HashTable* hashTable);
+//sets "newFrequency" elements with the "word" field
+void conveyFrequency(LinkedList* linkedList, char* word, int newFrequency);
 
-void deleteTable(HashTable* hashTable);
+//checks to see if the head points to NULL
+bool isEmpty(LinkedList* linkedList);
