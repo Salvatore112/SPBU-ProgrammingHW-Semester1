@@ -15,7 +15,11 @@ int main() {
     int roads = 0;
     fscanf(file, "%d", &roads);
     int** matrix = calloc(cities, sizeof(int*));
-    for (int i = 0; i < 5; i++) {
+    if (matrix == NULL) {
+        printf("Out of memory\n");
+        return 1;
+    }
+    for (int i = 0; i < cities; i++) {
         matrix[i] = calloc(cities, sizeof(int*));
     }
     for (int i = 0; i < roads; i++) {
