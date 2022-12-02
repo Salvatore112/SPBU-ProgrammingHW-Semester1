@@ -3,23 +3,27 @@
 #include <stdbool.h>
 #include "sort.h"
 
-#define testLength 10
-#define arraySize 1000
+#define ARRAY_SIZE 1000
 
 int mostFrequentElement(int array[], int length);
-bool frequenElementSearchTests();
+bool frequentElementSearchTests();
 
 int main() {
-    if (!qsortTests() || !frequenElementSearchTests()) {
+    if (!qsortTests() || !frequentElementSearchTests()) {
         return -1;
     }
 
     FILE *input = fopen("array.txt", "r");
-    int array[arraySize];
+    if (input == NULL) {
+        printf("File not found");
+        return 1;
+    }
+    int array[ARRAY_SIZE] = { 0 };
     int index = 0;
     while (fscanf(input, "%d", &array[index]) != EOF) {
         index++;
     }
+    fclose(input);
 
     for (int i = 0; i < index; i++) {
         printf("%d ", array[i]);
@@ -29,7 +33,6 @@ int main() {
 
     printf("The most frequent element in the array is: %d ", mostFrequentElement(array, index));
 
-    fclose(input);
     return 0;
 }
 
@@ -52,15 +55,15 @@ int mostFrequentElement(int array[], int length) {
     return mostFrequent;
 }
 
-bool frequenElementSearchTests() {
-    int test1[testLength] = {1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
-    if (mostFrequentElement(test1, testLength) != 1) {
+bool frequentElementSearchTests() {
+    int test1[TEST_LENGTH] = {1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
+    if (mostFrequentElement(test1, TEST_LENGTH) != 1) {
         printf("Failed when the most frequent element's only at the beginning\n");
         return false;
     }
 
-    int test2[testLength] = {1, 1, 1, 2, 2, 2, 2, 2, 2, 2};
-    if (mostFrequentElement(test2, testLength) != 2) {
+    int test2[TEST_LENGTH] = {1, 1, 1, 2, 2, 2, 2, 2, 2, 2};
+    if (mostFrequentElement(test2, TEST_LENGTH) != 2) {
         printf("Failed when the most frequent element's only at the end\n");
         return false;
     }
