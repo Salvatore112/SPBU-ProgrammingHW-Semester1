@@ -3,36 +3,32 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define strLength 100
+#define STR_LENGTH 100
+#define COLLECTION_LENGTH 100
 
-typedef struct entryStruct {
-    char name[strLength];
-    char number[strLength];
-
-} entry;
+typedef struct Entry {
+    char name[STR_LENGTH];
+    char number[STR_LENGTH];
+} Entry;
 
 void printOptions();
-void addEntry(entry collection[], int *entryNumber);
-void displayEntries(entry collection[], int length);
-void saveEntries(entry collection[], int length, FILE *dataBase);
-int readEntries(FILE *dataBase, entry collection[]);
-const char* findByName(entry collection[], char name[], int entryNumber);
-const char* findByNumber(entry collection[], char name[], int entryNumber);
+void addEntry(Entry collection[], int *entryNumber);
+void displayEntries(Entry collection[], int length);
+void saveEntries(Entry collection[], int length, const char* fileName);
+int readEntries(const char* fileName, Entry collection[]);
+const char* findByName(Entry collection[], const char name[], int entryNumber);
+const char* findByNumber(Entry collection[], const char number[], int entryNumber);
 bool testsFindByName();
 bool testsFindByNumber();
 
 int main() {
-    if(!(testsFindByName() && testsFindByNumber())) {
+    if (!(testsFindByName() && testsFindByNumber())) {
         return 1;
     }
     
-    entry collection[100];
-    FILE *dataBaseRead = fopen("dataBase.txt", "r");
+    Entry collection[COLLECTION_LENGTH];
 
-    int entryNumber = readEntries(dataBaseRead, collection);
-    fclose(dataBaseRead);
-
-    FILE *dataBase = fopen("dataBase.txt", "w");
+    int entryNumber = readEntries("dataBase.txt", collection);
 
     int option = 0;
     do {
@@ -42,7 +38,6 @@ int main() {
         switch (option) {
             case 0:
                 continue;
-                break;
             case 1:
                 addEntry(collection, &entryNumber);
                 break;
@@ -51,10 +46,11 @@ int main() {
                 break;
             case 3:
                 printf("\nEnter the name of the person that you want to find: ");
-                char soughtName[strLength];
+                char soughtName[STR_LENGTH] = { '\0' };
                 scanf("%s", soughtName);
-                if (findByName(collection, soughtName, entryNumber) != NULL) {
-                    printf("%s has the number %s\n", soughtName, findByName(collection, soughtName, entryNumber));
+                const char* obtainedNumber = findByName(collection, soughtName, entryNumber);
+                if (obtainedNumber != NULL) {
+                    printf("%s has the number %s\n", soughtName, obtainedNumber);
                 }
                 else {
                     printf("There is no such a person in the phone book!\n");
@@ -62,7 +58,7 @@ int main() {
                 break;
             case 4:
                 printf("\nEnter the number of the person you want to find: ");
-                char soughtNumber[strLength];
+                char soughtNumber[STR_LENGTH];
                 scanf("%s", soughtNumber);
                 if (findByNumber(collection, soughtNumber, entryNumber) != NULL) {
                     printf("The number %s belongs to %s\n", soughtName, findByNumber(collection, soughtNumber, entryNumber));
@@ -72,7 +68,7 @@ int main() {
                 }
                 break;
             case 5:
-                saveEntries(collection, entryNumber, dataBase);
+                saveEntries(collection, entryNumber, "dataBase.txt");
                 break;
         }
     } while (option != 0); 
@@ -80,12 +76,11 @@ int main() {
     return 0;
 }
 
-void printOptions()
-{
+void printOptions() {
     printf("\n*A phonebook*\n");
     printf("Options: \n");
     printf("0 - exit the phonebook\n");
-    printf("1 - add a new entry\n");
+    printf("1 - add a new Entry\n");
     printf("2 - display all the entries\n");
     printf("3 - find the phone number by name\n");
     printf("4 - find the name by the phone number\n");
@@ -93,11 +88,11 @@ void printOptions()
     printf("Enter a corresponding digit to choose an option: ");
 }
 
-void addEntry(entry collection[], int *entryNumber) {
+void addEntry(Entry collection[], int *entryNumber) {
     if (*entryNumber < 99) {
-        entry newEntry;
-        char newName[strLength];
-        char newNumber[strLength];
+        Entry newEntry = {{'\0'}, {'\0'}};
+        char newName[STR_LENGTH] = { '\0' };
+        char newNumber[STR_LENGTH] = { '\0' };
         
         printf("Enter the name: ");
         scanf("%s", &newName);
@@ -117,7 +112,7 @@ void addEntry(entry collection[], int *entryNumber) {
     }
 } 
 
-void displayEntries(entry collection[], int length)
+void displayEntries(Entry collection[], int length)
 {
     printf("\n* ALL THE ENTRIES *\n");
     
@@ -128,32 +123,32 @@ void displayEntries(entry collection[], int length)
     printf("\n* Done *\n");
 }
 
-void saveEntries(entry collection[], int length, FILE *dataBase) {
+void saveEntries(Entry collection[], int length, const char* fileName) {
+    FILE *dataBase = fopen(fileName, "w");
     for (int i = 0; i < length; i++) {
         fprintf(dataBase, "%s %s\n", collection[i].name, collection[i].number);
     }
-
-    printf("\n* Entries are saved! *\n");
+    printf("Entries are saved\n");
+    fclose(dataBase);
 }
 
-int readEntries(FILE *dataBase, entry collection[]) {
+int readEntries(const char* fileName, Entry collection[]) {
+    FILE *dataBase = fopen(fileName, "r");
     int i = 0;
-    char newName[strLength];
-    char newNumber[strLength];
+    char newName[STR_LENGTH];
+    char newNumber[STR_LENGTH];
     while(fscanf(dataBase, "%s", newName) != EOF && fscanf(dataBase, "%s", newNumber) != EOF) {
         strcpy(collection[i].name, newName);
         strcpy(collection[i].number, newNumber);
         i++;
     }
+    fclose(dataBase);
     return i;
 }
 
-const char* findByName(entry collection[], char name[], int entryNumber) {
-    bool found = false;
+const char* findByName(Entry collection[], const char name[], int entryNumber) {
     for (int i = 0; i < entryNumber; i++) {
-        int result = strcmp(name,collection[i].name);
-        if (result == 0) {
-            found = true;
+        if (strcmp(name,collection[i].name) == 0) {
             return collection[i].number;
         }
     }
@@ -161,19 +156,21 @@ const char* findByName(entry collection[], char name[], int entryNumber) {
 }
 
 bool testsFindByName() {
-    entry testCollection1[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"}, {"Stan", "099975"}};
+    Entry testCollection1[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"},
+                                {"Stan", "099975"}};
     if (strcmp(findByName(testCollection1, "Stan", 5), "099975") != 0) {
         printf("searching by name failed on the standart test\n");
         return false;
     }
 
-    entry testCollection2[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"}, {"Stan", "099975"}};
+    Entry testCollection2[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"},
+                                {"Stan", "099975"}};
     if (findByName(testCollection2, "Nathan", 5) != NULL) {
         printf("searching by name failed when there is no such a name in the phone book\n");
         return false;
     }
 
-    entry testCollection3[5];
+    Entry testCollection3[5];
     if (findByName(testCollection3, "Karl", 5) != NULL) {
         printf("searching by name failed when there is no entries\n");
         return false;
@@ -181,10 +178,10 @@ bool testsFindByName() {
     return true;
 }
 
-const char* findByNumber(entry collection[], char number[], int entryNumber) {
+const char* findByNumber(Entry collection[], const char number[], int entryNumber) {
     for (int i = 0; i < entryNumber; i++) {
         int result = strcmp(number, collection[i].number);
-        if(result == 0) {
+        if (result == 0) {
             return collection[i].name;
         }
     }
@@ -192,19 +189,21 @@ const char* findByNumber(entry collection[], char number[], int entryNumber) {
 }
 
 bool testsFindByNumber() {
-    entry testCollection1[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"}, {"Stan", "099975"}};
+    Entry testCollection1[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"},
+                                {"Layne", "876333"}, {"Stan", "099975"}};
     if (strcmp(findByNumber(testCollection1, "656334", 5), "James") != 0) {
         printf("searching by number failed on the standart test\n");
         return false;
     }
 
-    entry testCollection2[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"}, {"Layne", "876333"}, {"Stan", "099975"}};
+    Entry testCollection2[5] = {{"Mark", "124215"}, {"James", "656334"}, {"Henry", "876754"},
+                                {"Layne", "876333"}, {"Stan", "099975"}};
     if (findByNumber(testCollection2, "99999", 5) != NULL) {
         printf("searching by number failed when there is no such a number in the phone book\n");
         return false;
     }
 
-    entry testCollection3[5];
+    Entry testCollection3[5];
     if (findByNumber(testCollection3, "1111", 5) != NULL) {
         printf("searching by number failed when there is no entries\n");
         return false;
