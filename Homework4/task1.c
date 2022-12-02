@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <locale.h>
-#include <conio.h>
 #include <stdbool.h>
 
-#define BITS sizeof(int) * 8
+#define BITS (sizeof(int) * 8)
 
 void decimalToBinary(int number, int binaryNumber[]);
 void displayBinary(int array[]);
 bool binaryConvertTests();
-void binaryAddition(int number1[], int number2[], int result[]);
+void binaryAddition(const int number1[], const int number2[], int result[]);
 bool binAdditionTests();
-int countZeros(int binNum[]);
-int countOnes(int binNum[]);
-int binaryToDecimal(int binNum[]);
+int countZeros(const int binNum[]);
+int countOnes(const int binNum[]);
+int binaryToDecimal(const int binNum[]);
 bool decimalToBinTests();
 
 int main() {
@@ -30,19 +29,19 @@ int main() {
     printf("Введите второе число: ");
     scanf("%d", &number2);
 
-    int binNimber1[BITS] = { 0 };
-    int binNimber2[BITS] = { 0 };
+    int binNumber1[BITS] = { 0 };
+    int binNumber2[BITS] = { 0 };
 
-    decimalToBinary(number1, binNimber1);
-    decimalToBinary(number2, binNimber2);
+    decimalToBinary(number1, binNumber1);
+    decimalToBinary(number2, binNumber2);
 
     printf("Первое число в двоичной представлении в дополнительном коде: ");
-    displayBinary(binNimber1);
+    displayBinary(binNumber1);
     printf("\nВторое число в двоичной представлении в дополнительном коде: ");
-    displayBinary(binNimber2);
+    displayBinary(binNumber2);
 
     int result[BITS] = { 0 };
-    binaryAddition(binNimber1, binNimber2, result);
+    binaryAddition(binNumber1, binNumber2, result);
 
     printf("\nСумма обоих чисел в двоичной представлении в дополнительном коде: ");
     displayBinary(result);
@@ -66,26 +65,7 @@ void displayBinary(int array[]) {
     }
 }
 
-bool binaryConvertTests() {
-    int testNum1 = 2049;
-    int testBinNum1[BITS] = { 0 };
-    decimalToBinary(testNum1, testBinNum1);
-    if (!(testBinNum1[BITS - 1] == 1 && testBinNum1[BITS - 12] == 1 && countZeros(testBinNum1) == 30)) {
-        printf("Binary convert failed on a positive number!\n");
-        return false;
-    }
-
-    int testNum2 = -257;
-    int testBinNum2[BITS] = { 0 };
-    decimalToBinary(testNum2, testBinNum2);
-    if (!(testBinNum2[BITS - 9] == 0 && countOnes(testBinNum2) == 31)) {
-        printf("Binary convert failed on a negative number!\n");
-        return false;
-    }
-    return true;
-}
-
-void binaryAddition(int number1[], int number2[], int result[]) {
+void binaryAddition(const int number1[], const int number2[], int result[]) {
     int inMind = 0;
 
     for (int i = BITS - 1; i >= 0; i--) {
@@ -107,8 +87,79 @@ void binaryAddition(int number1[], int number2[], int result[]) {
                 result[i] = 1;
                 inMind = 1;
                 break;
+            default:
+                printf("Unexpected error\n");
         }
 	}
+}
+
+int countZeros(const int binNum[]) {
+    int count = 0;
+    for (int i = 0; i < BITS; i++) {
+        if (binNum[i] == 0) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int countOnes(const int binNum[]) {
+    int count = 0;
+    for (int i = 0; i < BITS; i++) {
+        if (binNum[i] == 1) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int binaryToDecimal(const int binNum[]) {
+    int currentExponent = 1;
+    int result = 0;
+    for (int i = BITS - 1; i >= 0; i--) {
+        result += binNum[i] * currentExponent;
+
+        currentExponent *= 2;
+    }
+    return result;
+}
+
+bool decimalToBinTests() {
+    int testVal1 = 100;
+    int binVal1[BITS] = { 0 };
+    decimalToBinary(testVal1, binVal1);
+    if (binaryToDecimal(binVal1) != testVal1) {
+        printf("Decimal to binary convert failed on a positive number");
+        return false;
+    }
+
+    int testVal2 = -124;
+    int binVal2[BITS] = { 0 };
+    decimalToBinary(testVal2, binVal2);
+    if (binaryToDecimal(binVal2) != testVal2) {
+        printf("Decimal to binary convert failed on a positive number");
+        return false;
+    }
+    return true;
+}
+
+bool binaryConvertTests() {
+    int testNum1 = 2049;
+    int testBinNum1[BITS] = { 0 };
+    decimalToBinary(testNum1, testBinNum1);
+    if (!(testBinNum1[BITS - 1] == 1 && testBinNum1[BITS - 12] == 1 && countZeros(testBinNum1) == 30)) {
+        printf("Binary convert failed on a positive number!\n");
+        return false;
+    }
+
+    int testNum2 = -257;
+    int testBinNum2[BITS] = { 0 };
+    decimalToBinary(testNum2, testBinNum2);
+    if (!(testBinNum2[BITS - 9] == 0 && countOnes(testBinNum2) == 31)) {
+        printf("Binary convert failed on a negative number!\n");
+        return false;
+    }
+    return true;
 }
 
 bool binAdditionTests() {
@@ -148,56 +199,6 @@ bool binAdditionTests() {
     binaryAddition(testNumBin31, testNumBin32, result3);
     if (!(countOnes(result3) == 31 && result3[BITS - 10] == 0)) {
         printf("Addition failed on adding two negative values\n");
-        return false;
-    }
-    return true;
-}
-
-int countZeros(int binNum[]) {
-    int count = 0;
-    for (int i = 0; i < BITS; i++) {
-        if (binNum[i] == 0) {
-            count++;
-        }
-    }
-    return count;
-}
-
-int countOnes(int binNum[]) {
-    int count = 0;
-    for (int i = 0; i < BITS; i++) {
-        if (binNum[i] == 1) {
-            count++;
-        }
-    }
-    return count;
-}
-
-int binaryToDecimal(int binNum[]) {
-    int currentExponent = 1;
-    int result = 0;
-    for (int i = BITS - 1; i >= 0; i--) {
-        result += binNum[i] * currentExponent;
-
-        currentExponent *= 2;
-    }
-    return result;
-}
-
-bool decimalToBinTests() {
-    int testVal1 = 100;
-    int binVal1[BITS] = { 0 };
-    decimalToBinary(testVal1, binVal1);
-    if (binaryToDecimal(binVal1) != testVal1) {
-        printf("Decimal to binary convert failed on a positive number");
-        return false;
-    }
-
-    int testVal2 = -124;
-    int binVal2[BITS] = { 0 };
-    decimalToBinary(testVal2, binVal2);
-    if (binaryToDecimal(binVal2) != testVal2) {
-        printf("Decimal to binary convert failed on a positive number");
         return false;
     }
     return true;
