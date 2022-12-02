@@ -19,6 +19,7 @@ int isPrime(int num) {
 
 int main() {
     int number;
+
     printf("Enter a number: ");
     scanf("%d", &number);
 
@@ -34,6 +35,6 @@ int main() {
             printf("%d\n", i);
         }
     }
-    
+
     return 0;
 }
