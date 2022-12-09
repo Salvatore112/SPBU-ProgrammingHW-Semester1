@@ -31,7 +31,7 @@ int main() {
     for (int i = 0; i < size; i++) {
         printf("Enter the element #%d (one of the following brackets '({[]})': ", i);
         scanf("%c", &string[i]);
-        scanf("%c");
+        scanf("%*c");
     }
 
     if (isBalanced(string, size)) {
@@ -44,7 +44,7 @@ int main() {
 }
 
 bool isBalanced(char string[], int length) {
-    Node *stack = NULL;
+    Node* stack = NULL;
     for (int i = 0; i < length; i++) {
         switch (string[i]) {
             case '(':
@@ -53,36 +53,31 @@ bool isBalanced(char string[], int length) {
                 push(&stack, string[i]);
                 break;
             case ')':
-                if(!(closedBracket(&stack, '(')))
-                {
+                if (!(closedBracket(&stack, '('))) {
                     return false;
                 }
                 break;
             case ']':
-                if(!(closedBracket(&stack, '[')))
-                {
+                if (!(closedBracket(&stack, '['))) {
                     return false;
                 }
                 break;
             case '}':
-                if(!(closedBracket(&stack, '{')))
-                {
+                if (!(closedBracket(&stack, '{'))) {
                     return false;
                 }
                 break;
         }
     }
-    
-    if (peek(stack) == '0') {
-        return true;
-    }
-    return false;
+    bool result = peek(stack) == '0';
+    deleteStack(stack);
+    return result;
 }
 
 bool closedBracket(Node **stack, char openBracket) {
     if (peek(*stack) == openBracket) {
         int errorCode = 0;
-        pop(&(*stack), &errorCode);
+        pop(stack, &errorCode);
         return true;
     }
     return false;
