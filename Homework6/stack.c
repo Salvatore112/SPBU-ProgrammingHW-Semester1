@@ -21,7 +21,7 @@ char pop(Node **head, int *errorCode) {
         return 0;
     }
     *errorCode = 0;
-    int value = (*head)->element;
+    char value = (*head)->element;
 
     Node *temp;
     temp = (*head)->previous;
@@ -57,4 +57,18 @@ void displayStack(Node *stack) {
         int errorCode = 0;
         printf("%c ", pop(&temp, &errorCode));
     }
+}
+
+const char* printStack(Node *stack) {
+    char* input = malloc(100 *sizeof(char));
+    Node *temp = stack;
+    int i = 0;
+    while (temp->previous != NULL) {
+        input[i] = temp->element;
+        temp = temp->previous;
+        i++;
+    }
+    input[i] = temp->element;
+    input[i + 1] = '\0';
+    return input;
 }

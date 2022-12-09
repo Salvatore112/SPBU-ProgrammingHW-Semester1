@@ -1,11 +1,9 @@
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <stdbool.h>
 
 //struct that holds the element at the top and the pointer to the element under it
-typedef struct Node 
-{
+typedef struct Node {
     char element;
     struct Node *previous;
 } Node; 
@@ -28,6 +26,4 @@ void clear(Node **head);
 //displays stack
 void displayStack(Node *stack);
 
-
-
-
+const char* printStack(Node *stack);

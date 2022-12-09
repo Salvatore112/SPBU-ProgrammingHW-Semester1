@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
 #include "stackTests.h"
@@ -73,7 +72,7 @@ bool isEmptyTests() {
 
 bool peekTests() {
     Node *testStack1 = NULL;
-    if (peek(testStack1) != '0') {
+    if (peek(testStack1) != 'n') {
         printf("peek failed on trying to peek an empty stack");
         return false;
     };  
@@ -96,11 +95,10 @@ bool peekTests() {
     return true;
 }
 
-bool clearTests()
-{
+bool clearTests() {
     Node *testStack1 = NULL;
     clear(&testStack1);
-    if (peek(testStack1) != '0') {
+    if (peek(testStack1) != 'n') {
         printf("Clear failed on an empty stack");
         return false;
     }
@@ -110,7 +108,7 @@ bool clearTests()
     push(&testStack2, '2');
     push(&testStack2, '4');
     clear(&testStack2);
-    if (peek(testStack2) != '0') {
+    if (peek(testStack2) != 'n') {
         printf("Clear failed");
         return false;
     }

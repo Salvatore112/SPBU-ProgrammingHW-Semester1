@@ -1,32 +1,32 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include "stack.h"
 #include "stackTests.h"
 
-#define size 1000
+#define SIZE 1000
 
-Node* infixToPostfix(char infixExpression[], int length);
+Node* infixToPostfix(char infixExpression[]);
+bool tests();
 
 int main() {
-    if (!stackTests()) {
+    if (!tests() || !stackTests()) {
         return 1;
     }
     
-    char infixExpression[size];
+    char infixExpression[SIZE] = { 0 };
+
     printf("Enter an expression in a postfix form: ");
     scanf("%[^\n]", infixExpression);
-    int length = strlen(infixExpression);
 
-    Node* expression = infixToPostfix(infixExpression, length); 
+    Node* expression = infixToPostfix(infixExpression);
     printf("Postfix form: ");
     displayStack(expression);
     
     return 0;
 }
-
-Node* infixToPostfix(char infixExpression[], int length) {
+// 1 * 2 + 3 * 4
+Node* infixToPostfix(char infixExpression[]) {
+    int length = strlen(infixExpression);
     Node *mainStack = NULL;
     Node *auxillaryStack = NULL;
 
@@ -36,7 +36,7 @@ Node* infixToPostfix(char infixExpression[], int length) {
             case '(':
                 push(&auxillaryStack, infixExpression[i]);  
                 break;
-            case ')':
+            case ')': {
                 int errorCode = 0;
                 while (peek(auxillaryStack) != '(') {
                     char character = peek(auxillaryStack);
@@ -45,8 +45,11 @@ Node* infixToPostfix(char infixExpression[], int length) {
                 }
                 pop(&auxillaryStack, &errorCode);
                 break;
+            }
             case '*':
-                if (peek(auxillaryStack) == '+' || peek(auxillaryStack) == '-' || peek(auxillaryStack) == '(', peek(auxillaryStack) == 'n') {
+            case '/':
+                if (peek(auxillaryStack) == '+' || peek(auxillaryStack) == '-' || peek(auxillaryStack) == '(' ||
+                            peek(auxillaryStack) == 'n') {
                     push(&auxillaryStack, infixExpression[i]);
                 }
                 else {
@@ -61,7 +64,9 @@ Node* infixToPostfix(char infixExpression[], int length) {
                     push(&auxillaryStack, infixExpression[i]);
                 }
                 else {
-                    push(&mainStack, infixExpression[i]);
+                    int errorCode = 0;
+                    push(&mainStack, pop(&auxillaryStack, &errorCode));
+                    push(&auxillaryStack, infixExpression[i]);
                 }
                 break;
             default:
@@ -78,8 +83,16 @@ Node* infixToPostfix(char infixExpression[], int length) {
     
     Node *reversedStack = NULL;
     while (!isEmpty(mainStack)) {
-        int errorCode;
+        int errorCode = 0;
         push(&reversedStack, pop(&mainStack, &errorCode));
     }
     return reversedStack;
+}
+
+bool tests() {
+    char* testExpression1 = "1 * 2 + 3 * 4";
+    char* expectedExpression = "12*34*+";
+    Node* testStack1 = infixToPostfix(testExpression1);
+    const char* outputExpression = printStack(testStack1);
+    return strcmp(outputExpression, expectedExpression) == 0;
 }
