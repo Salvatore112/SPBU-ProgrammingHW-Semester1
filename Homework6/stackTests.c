@@ -96,8 +96,7 @@ bool peekTests() {
     return true;
 }
 
-bool clearTests()
-{
+bool clearTests() {
     Node *testStack1 = NULL;
     clear(&testStack1);
     if (peek(testStack1) != '0') {
