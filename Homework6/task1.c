@@ -5,129 +5,113 @@
 #include "stack.h"
 #include "stackTests.h"
 
-#define size 1000
+#define SIZE 1000
 
-void operation(char operand, Node **PostFix, Node **PostFixMachine);
-char* calculator(char expression[], int expLength); 
+bool operation(char operand, Node **postfixMachine);
+int calculator(char expression[], int* errorCode);
 bool tests();
 
 int main() {
-    if (!(stackTests() && tests())) {
+    if (!tests() || !stackTests()) {
         return 1;
     }
-
-    char expression[size];
-    printf("Enter an expression in a postfix form: ");
+    int errorCode = 0;
+    char* expression[SIZE];
+    printf("Enter an expression that is in a postfix form: ");
     scanf("%[^\n]", expression);
-    int length = strlen(expression);
-    
-    printf("the answer is %s", calculator(expression, length));
+    int result = calculator(expression, &errorCode);
+    (errorCode < 0) ? printf("Error\n") : printf("%d", result);
 }
 
-void operation(char operand, Node **PostFix, Node **PostFixMachine) {
-   int topElement = 0;
-   int deeperElement = 0;
-   
-   char *tempResult = malloc(sizeof(char) * 10);
-   if (tempResult == NULL) {
-        printf("Out of memory!\n");
-        exit(1);
+bool operation(char operand, Node **postfixMachine) {
+   int errorCode = 0;
+   int topElement = pop(postfixMachine, &errorCode);
+   int deeperElement = pop(postfixMachine, &errorCode);
+   if (errorCode < 0) {
+       return false;
    }
-   
-   if((*PostFixMachine)->previous != NULL) {
-        int errorCode = 0;
-        pop(&(*PostFix), &errorCode);
-        topElement = atoi(pop(&(*PostFixMachine), &errorCode));
-        deeperElement = atoi(pop(&(*PostFixMachine), &errorCode));
-   }
+
    switch (operand) {
-        case '-':         
-            itoa(deeperElement - topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
+        case '-': {
+            int tempResult = deeperElement - topElement;
+            push(postfixMachine, tempResult, &errorCode);
             break;
-        case '+':       
-            itoa(deeperElement + topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
+        }
+        case '+': {
+            int tempResult = deeperElement + topElement;
+            push(postfixMachine, tempResult, &errorCode);
             break;
-        case '*':        
-            itoa(deeperElement * topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
+        }
+        case '*': {
+            int tempResult = deeperElement * topElement;
+            push(postfixMachine, tempResult, &errorCode);
             break;
-        case '/':       
-            itoa(deeperElement / topElement, tempResult, 10);
-            push(&(*PostFixMachine), tempResult); 
+        }
+        case '/': {
+            int tempResult = deeperElement / topElement;
+            push(postfixMachine, tempResult, &errorCode);
             break;
+        }
    }
+   return true;
 }
 
-char* calculator(char expression[], int expLength) {
-    Node *postFix = NULL; 
-    for (int i = expLength; i >= 0; i--) {
-        if (expression[i] != ' ' && expression[i] != '\0') {
-            char *string = malloc(sizeof(char) * 2);
-            string[1] = '\0';
-            string[0] = expression[i];
-            push(&postFix, string);
-        }
-    }
-
-    Node *postFixMachine = NULL;
-    while (!isEmpty(postFix)) {
-        switch (*(peek(postFix))) {
+int calculator(char expression[], int* errorCode) {
+    Node *stack = NULL;
+    int length = strlen(expression);
+    for (int i = 0; i < length; i++) {
+        switch (expression[i]) {
+            case ' ':
+                break;
             case '/':
             case '*':
             case '+':
             case '-':
-                operation(*(peek(postFix)), &postFix, &postFixMachine);
+                operation(expression[i], &stack);
                 break;
-            default:
+            default: {
                 int errorCode = 0;
-                push(&postFixMachine, pop(&postFix, &errorCode));
+                push(&stack, expression[i] - '0', &errorCode);
                 break;
+            }
         }
-    } 
-    return peek(postFixMachine);
+    }
+    int errorCodePeek = 0;
+    int result = peek(stack, &errorCodePeek);
+    if (errorCodePeek < 0 || stack->previous != NULL) {
+        *errorCode = -1;
+    }
+    return result;
 }  
 
 bool tests() {
+    int errorCode = 0;
     char testExpression1[] = "9 6 - 1 2 + *";
-    int testLength1 = strlen(testExpression1);
-    if (strcmp(calculator(testExpression1, testLength1), "9") != 0) {
+    if (calculator(testExpression1, &errorCode) != 9) {
         printf("Failed on the example exrepssion\n");
         return false;
     }
 
     char testExpression2[] = "9 9 +";
-    int testLength2 = strlen(testExpression2);
-    if (strcmp(calculator(testExpression2, testLength2), "18") != 0) {
+    if (calculator(testExpression2, &errorCode) != 18) {
         printf("Addition fail\n");
         return false;
     }
 
     char testExpression3[] = "5 9 -";
-    int testLength3 = strlen(testExpression3);
-    if (strcmp(calculator(testExpression3, testLength3), "-4") != 0) {
+    if (calculator(testExpression3, &errorCode) != -4) {
         printf("Subtraction fail\n");
         return false;
     }
 
     char testExpression4[] = "7 9 *";
-    int testLength4 = strlen(testExpression4);
-    if (strcmp(calculator(testExpression4, testLength3), "63") != 0) {
+    if (calculator(testExpression4, &errorCode) != 63) {
         printf("Multiplication fail\n");
         return false;
     }
 
     char testExpression5[] = "9 3 /";
-    int testLength5 = strlen(testExpression5);
-    if (strcmp(calculator(testExpression5, testLength5), "3") != 0) {
-        printf("Devision fail\n");
-        return false;
-    }
-
-    char testExpression6[] = "9 3 /";
-    int testLength6 = strlen(testExpression6);
-    if (strcmp(calculator(testExpression6, testLength6), "3") != 0) {
+    if (calculator(testExpression5, &errorCode) != 3) {
         printf("Devision fail\n");
         return false;
     }
