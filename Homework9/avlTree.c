@@ -1,27 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "avlTree.h"
+
+typedef struct Node {
+    char* key;
+    char* data;
+    struct Node *left;
+    struct Node *right;
+    int height;
+} Node;
+
+typedef struct Dictionary {
+    Node* root;
+};
+
+int height(struct Node *node) {
+    if (node == NULL)
+        return 0;
+    return node->height;
+}
 
 int max(int oneValue, int anotherValue) {
     return (oneValue > anotherValue) ? oneValue : anotherValue;
 }
 
-Node* newNode(int key, char* value) {
-    Node* temp = malloc(sizeof(Node));
-    temp->key = key;
-    temp->value = value;
-    temp->left = NULL;
-    temp->right = NULL;
-    temp->height = 1;
-    return temp;
-}
-
-int height(Node* node) {
-    if (node == NULL) {
-        return 0;
-    }
-    return node->height;
+Node* newNode(char* key, char* data) {
+    Node* newNode = malloc(sizeof(Node));
+    newNode->key = key;
+    newNode->data = data;
+    newNode->left   = NULL;
+    newNode->right  = NULL;
+    newNode->height = 1;
+    return(newNode);
 }
 
 Node* rightRotate(Node* root) {
@@ -56,83 +68,81 @@ int getBalance(struct Node *root) {
     return height(root->left) - height(root->right);
 }
 
-Node* insertRecursion(struct Node* root, int key, char* value) {
-    if (root == NULL)
-        return newNode(key, value);
-
-    if (key < root->key)
-        root->left = insertRecursion(root->left, key, value);
-    else if (key > root->key)
-        root->right = insertRecursion(root->right, key, value);
+struct Node* insertRecursion(struct Node* node, char* key, char* data) {
+    if (node == NULL) {
+        return (newNode(key, data));
+    }
+    if (strcmp(key, node->key) < 0) {
+        node->left = insertRecursion(node->left, key, data);
+    }
+    else if (strcmp(key, node->key) > 0) {
+        node->right = insertRecursion(node->right, key, data);
+    }
     else {
-        return root;
+        return node;
     }
 
-    root->height = max(height(root->left), height(root->right)) + 1;
+    node->height = 1 + max(height(node->left),
+                           height(node->right));
 
-    int balance = getBalance(root);
+    int balance = getBalance(node);
 
-    //LL
-    if (balance > 1 && key < root->left->key)
-        return rightRotate(root);
-    //RR
-    if (balance < -1 && key > root->right->key)
-        return leftRotate(root);
-    //LR
-    if (balance > 1 && key > root->left->key) {
-        root->left = leftRotate(root->left);
-        return rightRotate(root);
+    if (balance > 1 && key < node->left->key) {
+        return rightRotate(node);
     }
-    //RL
-    if (balance < -1 && key < root->right->key) {
-        root->right = rightRotate(root->right);
-        return leftRotate(root);
+
+    if (balance < -1 && key > node->right->key) {
+        return leftRotate(node);
     }
-    return root;
+
+    if (balance > 1 && key > node->left->key) {
+        node->left =  leftRotate(node->left);
+        return rightRotate(node);
+    }
+
+    if (balance < -1 && key < node->right->key) {
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
+    }
+
+    return node;
 }
 
-void insert(Dictionary* dictionary, int key, char* value) {
-    dictionary->root = insertRecursion(dictionary->root, key, value);
+struct Node * minValueNode(struct Node* node)
+{
+    struct Node* current = node;
+
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL)
+        current = current->left;
+
+    return current;
 }
 
-Node* minKeyNode(Node* root) {
-    Node* temp = root;
-    while (temp->left != NULL) {
-        temp = temp->left;
-    }
-    return temp;
-}
-
-Node* deleteRecursion(Node* root, int key) {
+Node* deleteNodeRecursion(Node* root, char* key) {
     if (root == NULL) {
         return root;
     }
 
-    if (key < root->key) {
-        root->left = deleteRecursion(root->left, key);
-    } else if (key > root->key) {
-        root->right = deleteRecursion(root->right, key);
+    if (strcmp(key, root->key) < 0) {
+        root->left = deleteNodeRecursion(root->left, key);
+    } else if(strcmp(key, root->key) > 0) {
+        root->right = deleteNodeRecursion(root->right, key);
     } else {
-        //case1: No children
-        if (root->left == NULL && root->right == NULL) {
-            free(root);
-            root = NULL;
-        }
-            //case2: One child
-        else if (root->left == NULL) {
-            Node *temp = root;
-            root = root->right;
+        if( (root->left == NULL) || (root->right == NULL) )
+        {
+            Node *temp = root->left ? root->left : root->right;
+            if (temp == NULL) {
+                temp = root;
+                root = NULL;
+            } else {
+                *root = *temp;
+            }
             free(temp);
-        } else if (root->right == NULL) {
-            Node *temp = root;
-            root = root->left;
-            free(temp);
-        }
-            //case3 : Two children
-        else {
-            Node *temp = minKeyNode(root->right);
+        } else {
+            Node* temp = minValueNode(root->right);
             root->key = temp->key;
-            root->right = deleteRecursion(root->right, temp->key);
+            root->right = deleteNodeRecursion(root->right, temp->key);
         }
     }
 
@@ -140,29 +150,24 @@ Node* deleteRecursion(Node* root, int key) {
         return root;
     }
 
-    root->height = 1 + max(height(root->left),
-                           height(root->right));
+    root->height = 1 + max(height(root->left), height(root->right));
 
     int balance = getBalance(root);
 
-    // LL
-    if (balance > 1 && getBalance(root->left) >= 0)
+    if (balance > 1 && getBalance(root->left) >= 0) {
         return rightRotate(root);
+    }
 
-    // LR
-    if (balance > 1 && getBalance(root->left) < 0)
-    {
+    if (balance > 1 && getBalance(root->left) < 0) {
         root->left =  leftRotate(root->left);
         return rightRotate(root);
     }
 
-    // RR
-    if (balance < -1 && getBalance(root->right) <= 0)
+    if (balance < -1 && getBalance(root->right) <= 0) {
         return leftRotate(root);
+    }
 
-    // RL
-    if (balance < -1 && getBalance(root->right) > 0)
-    {
+    if (balance < -1 && getBalance(root->right) > 0) {
         root->right = rightRotate(root->right);
         return leftRotate(root);
     }
@@ -170,16 +175,83 @@ Node* deleteRecursion(Node* root, int key) {
     return root;
 }
 
-void delete(Dictionary* dictionary, int key) {
-    deleteRecursion(dictionary->root, key);
+Dictionary* createDictionary() {
+    Dictionary* dictionary = malloc(sizeof(Dictionary));
+    dictionary->root = NULL;
+    return dictionary;
 }
 
-Dictionary* createDictionary() {
-    Dictionary* temp = malloc(sizeof(Dictionary));
-    if (temp == NULL) {
-        printf("Out of memory\n");
-        exit(1);
-    }
-    temp->root = NULL;
-    return temp;
+void deleteViaKey(Dictionary* dictionary, char *key) {
+    dictionary->root = deleteNodeRecursion(dictionary->root, key);
 }
+
+Node* findNodeByKey(Node* root, char* key) {
+    if (root->key == key) {
+        return root;
+    } else if (strcmp(key, root->key) > 0) {
+        return findNodeByKey(root->right, key);
+    } else {
+        return findNodeByKey(root->left, key);
+    }
+}
+
+bool isKeyHereRecursion(Node* root, char* key) {
+    if (root == NULL) {
+        return false;
+    }
+    else if (root->key == key) {
+        return true;
+    }
+    else if (key <= root->key) {
+        return isKeyHereRecursion(root->left, key);
+    }
+    else {
+        return isKeyHereRecursion(root->right, key);
+    }
+}
+
+bool isKeyHere(Dictionary* dictionary, char* key) {
+    return isKeyHereRecursion(dictionary->root, key);
+}
+
+void insert(Dictionary* dictionary, char* key, char* data) {
+    dictionary->root = insertRecursion(dictionary->root, key, data);
+}
+
+char* getValueRecursion(Node *root, char *key) {
+    if (root == NULL) {
+        return "NULL";
+    }
+    else if (root->key == key) {
+        return root->data;
+    }
+    else if (key <= root->key) {
+        return getValueRecursion(root->left, key);
+    }
+    else {
+        return getValueRecursion(root->right, key);
+    }
+}
+
+char* getValue(Dictionary* dictionary, char* key) {
+    return getValueRecursion(dictionary->root, key);
+}
+
+void postorderRecursion(Node *root) {
+    if (root == NULL) {
+        return;
+    }
+    postorderRecursion(root->left);
+    postorderRecursion(root->right);
+    free(root);
+}
+
+void deleteDictionary(Dictionary* dictionary) {
+    postorderRecursion(dictionary->root);
+}
+
+void changeData(Dictionary* dictionary, char* key, char* newData) {
+    Node* temp = findNodeByKey(dictionary->root, key);
+    temp->data = newData;
+}
+
