@@ -14,15 +14,13 @@ typedef struct Dictionary {
     BstNode *root;
 } Dictionary;
 
-BstNode* getNewNode(int key, char* value);
-bool search(BstNode *root, int key);
-BstNode* deleteRecursion(BstNode* root, int key);
-BstNode* insertRecurion(BstNode** root, int key, char* value);
-char* getValueRecursion(BstNode *root, int key);
-void postorderRecursion(BstNode *root);
-
-void insert(Dictionary* dictionary, int key, char* value) {
-    insertRecurion(&(dictionary->root), key, value);
+BstNode* getNewNode(int key, char* value) {
+    BstNode* newNode = malloc(sizeof(BstNode));
+    newNode->key = key;
+    newNode->value = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
 
 BstNode* insertRecurion(BstNode** root, int key, char* value) {
@@ -38,13 +36,8 @@ BstNode* insertRecurion(BstNode** root, int key, char* value) {
     return *root;
 }
 
-BstNode* getNewNode(int key, char* value) {
-    BstNode* newNode = malloc(sizeof(BstNode));
-    newNode->key = key;
-    newNode->value = value;
-    newNode->left = NULL;
-    newNode->right = NULL;
-    return newNode;
+void insert(Dictionary* dictionary, int key, char* value) {
+    insertRecurion(&(dictionary->root), key, value);
 }
 
 bool search(BstNode *root, int key) {
@@ -88,8 +81,13 @@ bool isKeyHere(Dictionary* dictionary, int key) {
     return false;
 }
 
-void deleteViaKey(Dictionary* dictionary, int key) {
-    deleteRecursion(dictionary->root, key);
+struct BstNode* minValueNode(struct BstNode* node) {
+    struct BstNode* current = node;
+
+    while (current && current->left != NULL)
+        current = current->left;
+
+    return current;
 }
 
 BstNode* deleteRecursion(BstNode* root, int key) {
@@ -124,7 +122,7 @@ BstNode* deleteRecursion(BstNode* root, int key) {
         }
             //case3 : Two children
         else {
-            BstNode* temp = root->right;
+            BstNode* temp = minValueNode(root->right);
             root->key = temp->key;
             root->right = deleteRecursion(root->right, key);
         }
@@ -132,14 +130,14 @@ BstNode* deleteRecursion(BstNode* root, int key) {
     }
 }
 
+void deleteViaKey(Dictionary* dictionary, int key) {
+    deleteRecursion(dictionary->root, key);
+}
+
 Dictionary* createDictionary() {
     Dictionary* tree = malloc(sizeof(Dictionary));
     tree->root = NULL;
     return tree;
-}
-
-void deleteDictionary(Dictionary* dictionary) {
-    postorderRecursion(dictionary->root);
 }
 
 void postorderRecursion(BstNode *root) {
@@ -151,3 +149,8 @@ void postorderRecursion(BstNode *root) {
     free(root->value);
     free(root);
 }
+
+void deleteDictionary(Dictionary* dictionary) {
+    postorderRecursion(dictionary->root);
+}
+
