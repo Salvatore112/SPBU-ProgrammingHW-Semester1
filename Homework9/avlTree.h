@@ -3,34 +3,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct Node {
-    int key;
-    char* value;
-    struct Node *left;
-    struct Node *right;
-    int height;
-} Node;
-
-typedef struct Dictionary {
-    Node* root;
-} Dictionary;
-
-int max(int oneValue, int anotherValue);
-
-Node* newNode(int key, char* value);
-
-int height(Node* node);
-
-Node* rightRotate(Node* root);
-
-Node* leftRotate(Node* root);
-
-void insert(Dictionary* dictionary, int key, char* value);
-
-void delete(Dictionary* dictionary, int key);
-
-Node* deleteRecursion(Node* root, int key);
-
-Node* minKeyNode(Node* root);
+typedef struct Dictionary Dictionary;
 
 Dictionary* createDictionary();
+
+void deleteViaKey(Dictionary* dictionary, char *key);
+
+bool isKeyHere(Dictionary* dictionary, char* key);
+
+void insert(Dictionary* dictionary, char* key, char* data);
+
+char* getValue(Dictionary* dictionary, char* key);
+
+void deleteDictionary(Dictionary* dictionary);
+
+void changeData(Dictionary* dictionary, char* key, char* newData);
