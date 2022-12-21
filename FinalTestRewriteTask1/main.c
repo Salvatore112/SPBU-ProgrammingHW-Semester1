@@ -4,7 +4,7 @@
 
 bool tests();
 
-int main() {
+int main(void) {
     if (!tests()) {
         return 1;
     }
