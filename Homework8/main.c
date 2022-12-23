@@ -15,7 +15,7 @@ int main() {
     Dictionary* dictionary = createDictionary();
 
     int choice = 0;
-    char valueBuffer[256];
+    char valueBuffer[256] = {'\0'};
     int key = 0;
     
     do {
@@ -27,13 +27,19 @@ int main() {
         case 1:
             printf("Enter a key: ");
             scanf("%d", &key);
-            if (isKeyHere(dictionary, key)) {
-                deleteViaKey(dictionary, key);
-            }
             printf("Enter a value: ");
-            scanf("%s", &valueBuffer);
+            scanf("%s", valueBuffer);
             char *value = malloc(sizeof(char) * 256);
+            if (value == NULL) {
+                printf("Out of memory\n");
+                deleteDictionary(dictionary);
+                return 1;
+            }
             strcpy(value, valueBuffer);
+            if (isKeyHere(dictionary, key)) {
+                changeData(dictionary, key, value);
+                break;
+            }
             insert(dictionary, key, value);
             break;
         case 2:
@@ -59,6 +65,7 @@ int main() {
             }
         default:
             printf("Invalid input\n");
+            deleteDictionary(dictionary);
             break;
         }
     } while (choice != 0);
@@ -84,18 +91,22 @@ bool tests() {
     insert(testDictionary1, 300, "600");
     if (!isKeyHere(testDictionary1, 100)) {
         printf("Insert failed\n");
+        deleteDictionary(testDictionary1);
         return false;
     }
     if (isKeyHere(testDictionary1, 1)) {
         printf("Insert failed on finding a nonexistent key in the dictionary\n");
+        deleteDictionary(testDictionary1);
         return false;
     }
     if (getValue(testDictionary1, 100) != "123") {
         printf("Get value function failed\n");
+        deleteDictionary(testDictionary1);
         return false;
     }
     if (strcmp(getValue(testDictionary1, 500), "NULL") != 0) {
         printf("Get value function failed on trying to get a value of a nonexistent key\n");
+        deleteDictionary(testDictionary1);
         return false;
     }
     return true;
