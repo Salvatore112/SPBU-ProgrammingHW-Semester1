@@ -10,9 +10,9 @@ typedef struct BstNode {
     struct BstNode *right;
 } BstNode;
 
-typedef struct Dictionary {
+struct Dictionary {
     BstNode *root;
-} Dictionary;
+};
 
 BstNode* getNewNode(int key, char* value) {
     BstNode* newNode = malloc(sizeof(BstNode));
@@ -154,3 +154,17 @@ void deleteDictionary(Dictionary* dictionary) {
     postorderRecursion(dictionary->root);
 }
 
+BstNode* findNodeByKey(BstNode* root, int key) {
+    if (root->key == key) {
+        return root;
+    } else if (key > root->key) {
+        return findNodeByKey(root->right, key);
+    } else {
+        return findNodeByKey(root->left, key);
+    }
+}
+
+void changeData(Dictionary* dictionary, int key, char* newData) {
+    BstNode* temp = findNodeByKey(dictionary->root, key);
+    temp->value = newData;
+}
