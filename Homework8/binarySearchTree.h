@@ -23,3 +23,6 @@ Dictionary* createDictionary();
 
 // Function that deletes a dictionary.
 void deleteDictionary(Dictionary* dictionary);
+
+// Function that changes data of the passed node.
+void changeData(Dictionary* dictionary, int key, char* newData);
