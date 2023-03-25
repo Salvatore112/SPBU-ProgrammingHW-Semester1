@@ -21,9 +21,12 @@ bool isEmpty(Node *head);
 char peek(Node *head); 
 
 //Function that removes all the elements from the stack
-void clear(Node **head); 
+void clear(Node **head);
 
-//displays stack
+//Function that deletes stack
+void deleteStack(Node* head);
+
+//Function that displays stack
 void displayStack(Node *stack);
 
 const char* printStack(Node *stack);
