@@ -1,11 +1,9 @@
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <stdbool.h>
 
 //struct that holds the element at the top and the pointer to the element under it
-typedef struct Node 
-{
+typedef struct Node {
     char element;
     struct Node *previous;
 } Node; 
@@ -25,4 +23,10 @@ char peek(Node *head);
 //Function that removes all the elements from the stack
 void clear(Node **head);
 
+//Function that deletes stack
 void deleteStack(Node* head);
+
+//Function that displays stack
+void displayStack(Node *stack);
+
+const char* printStack(Node *stack);

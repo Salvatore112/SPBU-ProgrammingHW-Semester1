@@ -21,7 +21,7 @@ char pop(Node **head, int *errorCode) {
         return 0;
     }
     *errorCode = 0;
-    int value = (*head)->element;
+    char value = (*head)->element;
 
     Node *temp;
     temp = (*head)->previous;
@@ -36,7 +36,7 @@ bool isEmpty(Node *head) {
 
 char peek(Node *head) {
     if (isEmpty(head)) {
-        return '0';
+        return 'n';
     }
     return head->element;
 }
@@ -51,6 +51,7 @@ void clear(Node **head) {
     }
 }
 
+
 void deleteStack(Node* head) {
     if (head == NULL) {
         return;
@@ -63,4 +64,25 @@ void deleteStack(Node* head) {
         current = next;
     }
     free(next);
+=======
+void displayStack(Node *stack) {
+    Node *temp = stack;
+    while (!isEmpty(temp)) {
+        int errorCode = 0;
+        printf("%c ", pop(&temp, &errorCode));
+    }
+}
+
+const char* printStack(Node *stack) {
+    char* input = malloc(100 *sizeof(char));
+    Node *temp = stack;
+    int i = 0;
+    while (temp->previous != NULL) {
+        input[i] = temp->element;
+        temp = temp->previous;
+        i++;
+    }
+    input[i] = temp->element;
+    input[i + 1] = '\0';
+    return input;
 }
