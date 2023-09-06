@@ -47,22 +47,22 @@
 
 Реализовать вычисление чисел Фибоначчи рекурсивно, реализовать итеративно, выяснить, с какого номера числа Фибоначчи рекурсивный вариант заметно медленнее итеративного. 
 
-[Решение]([https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework1/task6.c](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task1))
+[Решение](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task1)
 
 # Возведение в степень
 
 Реализовать возведение в целую степень — в лоб (за линейное время) и за О(log n).
 
-[Решение]([https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework1/task6.c](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task2))
+[Решение](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task2)
 
 # Пузырёк и подсчёт
 
 Написать сортировки пузырьком и подсчётом. С помощью функции clock() из time.h сравнить времена их работы на массиве из 100000 элементов. 
 
-[Решение]([https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework1/task6.c](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task3))
+[Решение](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/tree/master/Homework2/Task3)
 
 # Полукусорт
 
 Написать программу, которая заполняет массив случайными значениями (с использованием функции rand из stdlib.h), потом преобразует его без использования дополнительных массивов так, что в начале массива будут элементы, меньшие первого, а в конце — большие либо равные первому. Программа должна работать за линейное время.
 
-[Решение]([https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework1/task6.c](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework2/task4.c)https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework2/task4.c)
+[Решение](https://github.com/Salvatore112/SPBU-ProgrammingHW-Semester1/blob/master/Homework2/task4.c)
