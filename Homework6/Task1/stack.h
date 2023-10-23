@@ -3,29 +3,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-//struct that holds the element at the top and the pointer to the element under it
-typedef struct Node {
-    int element;
+typedef struct Node
+{
+    char element;
     struct Node *previous;
-} Node; 
+} Node; // struct that holds the element at the top and the pointer to the element under it
 
-// Function that adds a new element at the top of the stack.
-void push(Node **head, int element, int *errorCode);
+char* push(Node **head, char* element); // Function that adds a new element at the top of the stack
 
-// Function that removes a new element at the top of the stack.
-int pop(Node **head, int *errorCode);
+char* pop(Node **head, int *errorCode); // Function that removes a new element at the top of the stack
 
-// Function that checks if the stack is empty.
-bool isEmpty(Node *head);
+bool isEmpty(Node *head); // Function that checks if the stack is empty
 
-// Function that returns the current element at the top of the stack.
-int peek(Node *head, int *errorCode);
+char* peek(Node *head); // Function that returns the current element at the top of the stack
 
-// Function that removes all the elements from the stack.
-void clear(Node **head); 
-
-// Function that displays all the elements of the stack.
-void displayStack(Node *stack); 
-
-
-
+void clear(Node **head); // Function that removes all the elements from the stack
