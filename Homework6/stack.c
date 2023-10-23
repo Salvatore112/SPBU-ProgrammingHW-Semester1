@@ -64,7 +64,8 @@ void deleteStack(Node* head) {
         current = next;
     }
     free(next);
-=======
+}
+
 void displayStack(Node *stack) {
     Node *temp = stack;
     while (!isEmpty(temp)) {
