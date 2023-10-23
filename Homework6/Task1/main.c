@@ -20,40 +20,40 @@ int main() {
     printf("Enter an expression that is in a postfix form: ");
     scanf("%[^\n]", expression);
     int result = calculator(expression, &errorCode);
-    (errorCode < 0) ? printf("Error\n") : printf("%d", result);
+    (errorCode < 0) ? printf("Error\n") : printf("The result is %d", result);
 }
 
 bool operation(char operand, Node **postfixMachine) {
-   int errorCode = 0;
-   int topElement = pop(postfixMachine, &errorCode);
-   int deeperElement = pop(postfixMachine, &errorCode);
-   if (errorCode < 0) {
-       return false;
-   }
+    int errorCode = 0;
+    int topElement = pop(postfixMachine, &errorCode);
+    int deeperElement = pop(postfixMachine, &errorCode);
+    if (errorCode < 0) {
+        return false;
+    }
 
-   switch (operand) {
+    switch (operand) {
         case '-': {
             int tempResult = deeperElement - topElement;
-            push(postfixMachine, tempResult, &errorCode);
+            push(postfixMachine, tempResult);
             break;
         }
         case '+': {
             int tempResult = deeperElement + topElement;
-            push(postfixMachine, tempResult, &errorCode);
+            push(postfixMachine, tempResult);
             break;
         }
         case '*': {
             int tempResult = deeperElement * topElement;
-            push(postfixMachine, tempResult, &errorCode);
+            push(postfixMachine, tempResult);
             break;
         }
         case '/': {
             int tempResult = deeperElement / topElement;
-            push(postfixMachine, tempResult, &errorCode);
+            push(postfixMachine, tempResult);
             break;
         }
-   }
-   return true;
+    }
+    return true;
 }
 
 int calculator(char expression[], int* errorCode) {
@@ -71,18 +71,18 @@ int calculator(char expression[], int* errorCode) {
                 break;
             default: {
                 int errorCode = 0;
-                push(&stack, expression[i] - '0', &errorCode);
+                push(&stack, expression[i] - '0');
                 break;
             }
         }
     }
     int errorCodePeek = 0;
-    int result = peek(stack, &errorCodePeek);
+    int result = peek(stack);
     if (errorCodePeek < 0 || stack->previous != NULL) {
         *errorCode = -1;
     }
     return result;
-}  
+}
 
 bool tests() {
     int errorCode = 0;
